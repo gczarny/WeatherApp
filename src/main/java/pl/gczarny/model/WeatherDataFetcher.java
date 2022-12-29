@@ -11,6 +11,12 @@ import com.google.gson.JsonParser;
 
 public class WeatherDataFetcher {
 
+    public static WeatherData fetchWeatherData(String location){
+        double temperature = getTemperature(location);
+
+        return new WeatherData(temperature);
+    }
+
     public static double getTemperature(String location){
         try{
             String urlString = String.format(Config.getApiUrl(), location);
@@ -18,7 +24,6 @@ public class WeatherDataFetcher {
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             con.connect();
-            System.out.println("Pobieranie danych z serwera...");
             BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;
             StringBuilder content = new StringBuilder();
@@ -27,7 +32,6 @@ public class WeatherDataFetcher {
             }
             reader.close();
             con.disconnect();
-            System.out.println("Dane zostały pobrane pomyślnie.");
             JsonObject json = new JsonParser().parse(content.toString()).getAsJsonObject();
             JsonObject main = json.getAsJsonObject("main");
             double temperatureInKelvins = main.get("temp").getAsDouble();
