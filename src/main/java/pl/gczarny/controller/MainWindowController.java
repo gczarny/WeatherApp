@@ -2,12 +2,16 @@ package pl.gczarny.controller;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.util.Duration;
+import pl.gczarny.utils.DialogUtils;
 import pl.gczarny.model.WeatherData;
 import pl.gczarny.model.WeatherDataFetchTask;
 
@@ -48,12 +52,30 @@ public class MainWindowController {
             dataStatusLabel.setText("Wystąpił błąd podczas pobierania danych.");
         });
         new Thread(fetchTask).start();
-
-
-
-        /*double temperature = WeatherDataFetcher.getTemperature(location);
-        temperatureLeftSide.setText(String.format("%.1f°C", temperature));*/
     }
+    @FXML
+    void closeApplication() {
+        if(DialogUtils.confirmCloseApplication().get() == ButtonType.OK){
+            Platform.exit();
+            System.exit(0);
+        }
+    }
+
+    @FXML
+    void setCaspian() {
+        Application.setUserAgentStylesheet(Application.STYLESHEET_CASPIAN);
+    }
+
+    @FXML
+    void setModena() {
+        Application.setUserAgentStylesheet(Application.STYLESHEET_MODENA);
+    }
+
+    @FXML
+    void showAbout() {
+        DialogUtils.dialogAboutApplication();
+    }
+
     private void resetStatusLabelAfterDelay(Label label) {
         Timeline timeline = new Timeline(new KeyFrame(
                 Duration.millis(3000),
