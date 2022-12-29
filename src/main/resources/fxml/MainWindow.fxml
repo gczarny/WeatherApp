@@ -17,10 +17,15 @@
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="369.0" text="Set Location" />
                   <TextField fx:id="leftCityTextField" prefHeight="32.0" prefWidth="369.0">
                      <VBox.margin>
-                        <Insets bottom="10.0" />
+                        <Insets bottom="2.0" />
                      </VBox.margin>
                   </TextField>
-                    <Button alignment="CENTER" onAction="#ackLeftLocationButton" prefHeight="25.0" prefWidth="89.0" text="Ackownledge" textAlignment="CENTER">
+                  <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="367.0" textFill="#f52424">
+                     <VBox.margin>
+                        <Insets bottom="2.0" />
+                     </VBox.margin>
+                  </Label>
+                    <Button alignment="CENTER" onAction="#ackLeftLocationButton" prefHeight="25.0" prefWidth="89.0" text="%acknowledge" textAlignment="CENTER">
                      <VBox.margin>
                         <Insets bottom="50.0" />
                      </VBox.margin>

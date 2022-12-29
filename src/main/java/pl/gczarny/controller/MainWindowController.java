@@ -1,11 +1,15 @@
 package pl.gczarny.controller;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.util.Duration;
 import pl.gczarny.model.WeatherData;
 import pl.gczarny.model.WeatherDataFetchTask;
-import pl.gczarny.model.WeatherDataFetcher;
 
 public class MainWindowController {
 
@@ -17,25 +21,28 @@ public class MainWindowController {
     @FXML
     private Label dataStatusLabel;
     @FXML
+    private Label errorLabel;
+    @FXML
     public void ackLeftLocationButton(){
 
         String location = leftCityTextField.getText();
+        if(location.isEmpty() || location.equals("")){
+            errorLabel.setText("Pole nie może być puste");
+            return;
+        }
+        errorLabel.setText("");
         dataStatusLabel.setText("Pobieranie danych z serwera...");
 
         WeatherDataFetchTask fetchTask = new WeatherDataFetchTask(location);
         fetchTask.setOnSucceeded(event -> {
             WeatherData weatherData = fetchTask.getValue();
-            temperatureLeftSide.setText(String.format("%.1f°C", weatherData.getTemperature()));
-            dataStatusLabel.setText("Dane zostały pobrane pomyślnie");
-            new Thread(() -> {
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-                // przywrócenie poprzedniej wartości pola status
-                dataStatusLabel.setText("");
-            }).start();
+            if(Double.isNaN(weatherData.getTemperature())){
+                dataStatusLabel.setText("Nie odnaleziono miasta");
+            }else{
+                temperatureLeftSide.setText(String.format("%.1f°C", weatherData.getTemperature()));
+                dataStatusLabel.setText("Dane zostały pobrane pomyślnie");
+                resetStatusLabelAfterDelay(dataStatusLabel);
+            }
         });
         fetchTask.setOnFailed(event -> {
             dataStatusLabel.setText("Wystąpił błąd podczas pobierania danych.");
@@ -43,8 +50,21 @@ public class MainWindowController {
         new Thread(fetchTask).start();
 
 
+
         /*double temperature = WeatherDataFetcher.getTemperature(location);
         temperatureLeftSide.setText(String.format("%.1f°C", temperature));*/
+    }
+    private void resetStatusLabelAfterDelay(Label label) {
+        Timeline timeline = new Timeline(new KeyFrame(
+                Duration.millis(3000),
+                new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        label.setText("");
+                    }
+                }
+        ));
+        timeline.play();
     }
 
 }
