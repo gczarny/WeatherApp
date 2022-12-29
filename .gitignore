@@ -22,3 +22,6 @@ buildNumber.properties
 *.iml
 *.ipr
 *.iws
+
+#Classes
+Config.java
