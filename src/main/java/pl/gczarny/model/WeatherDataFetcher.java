@@ -3,6 +3,7 @@ package pl.gczarny.model;
 import pl.gczarny.Config;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -11,6 +12,12 @@ import com.google.gson.JsonParser;
 
 public class WeatherDataFetcher {
 
+    public static WeatherData fetchWeatherData(String location){
+        double temperature = getTemperature(location);
+
+        return new WeatherData(temperature);
+    }
+
     public static double getTemperature(String location){
         try{
             String urlString = String.format(Config.getApiUrl(), location);
@@ -18,7 +25,6 @@ public class WeatherDataFetcher {
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             con.connect();
-            System.out.println("Pobieranie danych z serwera...");
             BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;
             StringBuilder content = new StringBuilder();
@@ -27,12 +33,16 @@ public class WeatherDataFetcher {
             }
             reader.close();
             con.disconnect();
-            System.out.println("Dane zostały pobrane pomyślnie.");
             JsonObject json = new JsonParser().parse(content.toString()).getAsJsonObject();
+            // sprawdź, czy otrzymano kod błędu od serwera
+
             JsonObject main = json.getAsJsonObject("main");
             double temperatureInKelvins = main.get("temp").getAsDouble();
             return temperatureInKelvins  - 273.15;
-        } catch (Exception e) {
+        }catch (FileNotFoundException e) {
+            return Double.NaN;
+        }
+        catch (Exception e) {
             e.printStackTrace();
             return Double.NaN;
         }
