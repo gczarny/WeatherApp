@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import pl.gczarny.utils.exceptions.WeatherDataFetchException;
 
 public class WeatherDataFetcher {
 
@@ -39,11 +40,8 @@ public class WeatherDataFetcher {
             JsonObject main = json.getAsJsonObject("main");
             double temperatureInKelvins = main.get("temp").getAsDouble();
             return temperatureInKelvins  - 273.15;
-        }catch (FileNotFoundException e) {
-            return Double.NaN;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+        }catch (Exception e) {
+            //throw new WeatherDataFetchException();
             return Double.NaN;
         }
     }
