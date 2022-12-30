@@ -10,14 +10,16 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<SplitPane dividerPositions="0.5" prefHeight="469.0" prefWidth="703.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.gczarny.controller.MainWindowController">
+<SplitPane dividerPositions="0.5" prefHeight="552.0" prefWidth="951.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.gczarny.controller.MainWindowController">
    <items>
-      <AnchorPane prefHeight="528.0" prefWidth="761.0">
+      <AnchorPane prefHeight="528.0" prefWidth="761.0" style="-fx-background-image: url('/images/left_bg.png'); -fx-background-size: cover; -fx-background-position: center;">
           <children>
-            <MenuBar prefHeight="26.0" prefWidth="356.0">
+            <MenuBar prefHeight="26.0" prefWidth="472.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <menus>
                 <Menu mnemonicParsing="false" text="Plik">
                   <items>
@@ -41,33 +43,40 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <VBox alignment="TOP_CENTER" layoutX="56.0" layoutY="118.0" prefHeight="264.0" prefWidth="369.0" style="-fx-background-color: #f0ffff;" AnchorPane.leftAnchor="56.0" AnchorPane.rightAnchor="56.0" AnchorPane.topAnchor="118.0">
+            <VBox alignment="TOP_CENTER" layoutX="1.0" layoutY="26.0" prefHeight="188.0" prefWidth="493.0">
                <children>
+                  <Label alignment="CENTER" prefHeight="33.0" prefWidth="472.0" text="Your destination" />
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="369.0" text="%set.location" />
-                  <TextField fx:id="leftCityTextField" prefHeight="32.0" prefWidth="292.0">
+                  <TextField fx:id="leftCityTextField" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="250.0" scaleShape="false">
                      <VBox.margin>
                         <Insets bottom="2.0" />
                      </VBox.margin>
                   </TextField>
-                  <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="367.0" textFill="#f52424">
-                     <VBox.margin>
-                        <Insets bottom="2.0" />
-                     </VBox.margin>
-                  </Label>
                     <Button alignment="CENTER" onAction="#ackLeftLocationButton" prefHeight="25.0" prefWidth="89.0" text="%acknowledge" textAlignment="CENTER">
                      <VBox.margin>
-                        <Insets bottom="50.0" />
+                        <Insets bottom="15.0" />
                      </VBox.margin>
                   </Button>
-                  <Label fx:id="dataStatusLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="368.0" />
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="378.0" text="Temperature:" />
-                  <Label fx:id="temperatureLeftSide" alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="369.0" />
+                  <Label fx:id="dataStatusLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="368.0" text="Helplabel" />
                </children>
             </VBox>
-            <Label alignment="CENTER" layoutX="65.0" layoutY="85.0" prefHeight="33.0" prefWidth="221.0" text="Your destination" />
+            <VBox layoutX="14.0" layoutY="214.0" prefHeight="121.0" prefWidth="89.0">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="120.0" text="Temperature:" />
+                  <Label fx:id="temperatureLeftSide" alignment="CENTER" contentDisplay="CENTER" prefHeight="29.0" prefWidth="120.0" />
+                  <ImageView fx:id="leftImageView" fitHeight="69.0" fitWidth="104.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                     <effect>
+                        <Shadow />
+                     </effect>
+                  </ImageView>
+               </children>
+            </VBox>
           </children>
       
             </AnchorPane>
-      <AnchorPane prefHeight="200.0" prefWidth="191.0" />
+      <AnchorPane prefHeight="519.0" prefWidth="433.0" style="-fx-background-image: url('/images/right_bg.png'); -fx-background-size: cover; -fx-background-position: center;">
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="113.0" layoutY="266.0" pickOnBounds="true" preserveRatio="true" />
+         </children></AnchorPane>
    </items>
 </SplitPane>

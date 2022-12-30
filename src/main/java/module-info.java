@@ -9,6 +9,6 @@ module WeatherApp {
     exports pl.gczarny;
     exports pl.gczarny.controller;
     opens pl.gczarny.controller to javafx.fxml;
-
+    opens pl.gczarny.utils;
 
 }

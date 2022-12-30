@@ -1,6 +1,7 @@
 package pl.gczarny.model;
 
 import javafx.concurrent.Task;
+import pl.gczarny.utils.exceptions.WeatherDataFetchException;
 
 public class WeatherDataFetchTask extends Task<WeatherData> {
 
