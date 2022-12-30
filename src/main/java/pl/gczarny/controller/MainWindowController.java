@@ -14,6 +14,8 @@ import javafx.util.Duration;
 import pl.gczarny.utils.DialogUtils;
 import pl.gczarny.model.WeatherData;
 import pl.gczarny.model.WeatherDataFetchTask;
+import pl.gczarny.utils.FxmlUtils;
+import pl.gczarny.utils.exceptions.WeatherDataFetchException;
 
 public class MainWindowController {
 
@@ -28,7 +30,6 @@ public class MainWindowController {
     private Label errorLabel;
     @FXML
     public void ackLeftLocationButton(){
-
         String location = leftCityTextField.getText();
         if(location.isEmpty() || location.equals("")){
             errorLabel.setText("Pole nie może być puste");
@@ -41,7 +42,8 @@ public class MainWindowController {
         fetchTask.setOnSucceeded(event -> {
             WeatherData weatherData = fetchTask.getValue();
             if(Double.isNaN(weatherData.getTemperature())){
-                dataStatusLabel.setText("Nie odnaleziono miasta");
+                /*dataStatusLabel.setText("Nie odnaleziono miasta");
+                DialogUtils.errorDialog(FxmlUtils.getResourceBundle().getString("error.not.found"));*/
             }else{
                 temperatureLeftSide.setText(String.format("%.1f°C", weatherData.getTemperature()));
                 dataStatusLabel.setText("Dane zostały pobrane pomyślnie");
@@ -49,7 +51,12 @@ public class MainWindowController {
             }
         });
         fetchTask.setOnFailed(event -> {
-            dataStatusLabel.setText("Wystąpił błąd podczas pobierania danych.");
+            Throwable exception = fetchTask.getException();
+            if(exception instanceof WeatherDataFetchException){
+                DialogUtils.errorDialog(exception.getMessage());
+                dataStatusLabel.setText("");
+            }else
+                DialogUtils.errorDialog(FxmlUtils.getResourceBundle().getString("error.not.found.all"));
         });
         new Thread(fetchTask).start();
     }

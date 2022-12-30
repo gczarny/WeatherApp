@@ -10,14 +10,16 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<SplitPane dividerPositions="0.5" prefHeight="469.0" prefWidth="703.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.gczarny.controller.MainWindowController">
+<SplitPane dividerPositions="0.5" prefHeight="552.0" prefWidth="951.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.gczarny.controller.MainWindowController">
    <items>
       <AnchorPane prefHeight="528.0" prefWidth="761.0">
           <children>
-            <MenuBar prefHeight="26.0" prefWidth="356.0">
+            <MenuBar prefHeight="26.0" prefWidth="472.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <menus>
                 <Menu mnemonicParsing="false" text="Plik">
                   <items>
@@ -41,8 +43,9 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <VBox alignment="TOP_CENTER" layoutX="56.0" layoutY="118.0" prefHeight="264.0" prefWidth="369.0" style="-fx-background-color: #f0ffff;" AnchorPane.leftAnchor="56.0" AnchorPane.rightAnchor="56.0" AnchorPane.topAnchor="118.0">
+            <VBox alignment="TOP_CENTER" layoutX="1.0" layoutY="26.0" prefHeight="188.0" prefWidth="493.0" style="-fx-background-color: #f0ffff;" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="26.0">
                <children>
+                  <Label alignment="CENTER" prefHeight="33.0" prefWidth="472.0" text="Your destination" />
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="369.0" text="%set.location" />
                   <TextField fx:id="leftCityTextField" prefHeight="32.0" prefWidth="292.0">
                      <VBox.margin>
@@ -56,18 +59,25 @@
                   </Label>
                     <Button alignment="CENTER" onAction="#ackLeftLocationButton" prefHeight="25.0" prefWidth="89.0" text="%acknowledge" textAlignment="CENTER">
                      <VBox.margin>
-                        <Insets bottom="50.0" />
+                        <Insets bottom="15.0" />
                      </VBox.margin>
                   </Button>
-                  <Label fx:id="dataStatusLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="368.0" />
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="378.0" text="Temperature:" />
-                  <Label fx:id="temperatureLeftSide" alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="369.0" />
+                  <Label fx:id="dataStatusLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="368.0" text="Helplabel" />
                </children>
             </VBox>
-            <Label alignment="CENTER" layoutX="65.0" layoutY="85.0" prefHeight="33.0" prefWidth="221.0" text="Your destination" />
+            <HBox layoutY="214.0" prefHeight="133.0" prefWidth="484.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0" />
+               </children>
+            </HBox>
+            <Label fx:id="temperatureLeftSide" alignment="CENTER" contentDisplay="CENTER" layoutX="171.0" layoutY="384.0" prefHeight="26.0" prefWidth="120.0" />
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="213.0" layoutY="437.0" prefHeight="25.0" prefWidth="120.0" text="Temperature:" />
           </children>
       
             </AnchorPane>
-      <AnchorPane prefHeight="200.0" prefWidth="191.0" />
+      <AnchorPane prefHeight="519.0" prefWidth="433.0">
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="113.0" layoutY="266.0" pickOnBounds="true" preserveRatio="true" />
+         </children></AnchorPane>
    </items>
 </SplitPane>
