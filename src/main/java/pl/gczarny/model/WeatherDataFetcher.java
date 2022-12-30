@@ -21,7 +21,8 @@ public class WeatherDataFetcher {
         JsonObject json = fetchWeatherDataFromApi(location);
         double temperature = getTemperature(json);
         String description = getWeatherDescription(json);
-        return new WeatherData(temperature, description);
+        String id = getWeatherId(json);
+        return new WeatherData(temperature, description, id);
     }
 
     public static double getTemperature(JsonObject json){
@@ -36,6 +37,12 @@ public class WeatherDataFetcher {
         JsonArray weatherArray = json.getAsJsonArray("weather");
         JsonObject weather = weatherArray.get(0).getAsJsonObject();
         return weather.get("description").getAsString();
+    }
+    public static String getWeatherId(JsonObject json){
+        //JsonObject json = fetchWeatherDataFromApi(location);
+        JsonArray weatherArray = json.getAsJsonArray("weather");
+        JsonObject weather = weatherArray.get(0).getAsJsonObject();
+        return weather.get("icon").getAsString();
     }
     private static JsonObject fetchWeatherDataFromApi(String location) throws WeatherDataFetchException {
         try{

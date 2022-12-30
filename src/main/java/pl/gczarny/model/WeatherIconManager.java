@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WeatherIconManager {
-    private static final Map<String, String> ICONS_BY_DESCRIPTION;
+    /*private static final Map<String, String> ICONS_BY_DESCRIPTION;
     static {
         Map<String, String> iconsByDescription = new HashMap<>();
         iconsByDescription.put("clear sky", "/icons/sunny.png");
@@ -27,7 +27,18 @@ public class WeatherIconManager {
             return "/icons/na.png";
         }
         return iconPath;
+    }*/
+    private static final String ICON_URL_PATTERN = "http://openweathermap.org/img/wn/%s@2x.png";
+    private static String getIconUrl(String id) {
+        return String.format(ICON_URL_PATTERN, id);
     }
+
+    public static String getIconPath(String id) {
+        return getIconUrl(id);
+    }
+
+
+
 /*    private static final String SUNNY_ICON_URL = "/icons/sunny.png";
     private static final String CLOUDY_ICON_URL = "/icons/cloudy.png";
     private static final String RAINY_ICON_URL = "/icons/rainy.png";

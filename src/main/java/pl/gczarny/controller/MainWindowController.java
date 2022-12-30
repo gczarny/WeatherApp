@@ -44,9 +44,9 @@ public class MainWindowController {
         fetchTask.setOnSucceeded(event -> {
             WeatherData weatherData = fetchTask.getValue();
             temperatureLeftSide.setText(String.format("%.1f°C", weatherData.getTemperature()));
-            System.out.println(weatherData.getDescription());
+            System.out.println(weatherData.getId());
             dataStatusLabel.setText(FxmlUtils.getResourceBundle().getString("data.status.done"));
-            updateLeftImageView(weatherData.getDescription());
+            updateLeftImageView(weatherData.getId());
             resetStatusLabelAfterDelay(dataStatusLabel);
         });
         fetchTask.setOnFailed(event -> {
@@ -82,12 +82,17 @@ public class MainWindowController {
         DialogUtils.dialogAboutApplication();
     }
 
-    void updateLeftImageView(String description){
+    /*void updateLeftImageView(String description){
         String iconPath = WeatherIconManager.getIconPath(description);
         Image image = new Image(iconPath);
         leftImageView.setImage(image);
-    }
+    }*/
 
+    void updateLeftImageView(String id){
+        String iconPath = WeatherIconManager.getIconPath(id);
+        Image image = new Image(iconPath);
+        leftImageView.setImage(image);
+    }
 
     private void resetStatusLabelAfterDelay(Label label) {
         Timeline timeline = new Timeline(new KeyFrame(
