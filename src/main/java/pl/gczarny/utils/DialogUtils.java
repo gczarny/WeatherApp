@@ -35,4 +35,11 @@ public class DialogUtils {
         errorAlert.getDialogPane().setContent(new TextArea(error));
         errorAlert.showAndWait();
     }
+
+    public static void warningDialog(String warning){
+        Alert warningAlert = new Alert(Alert.AlertType.WARNING);
+        warningAlert.setTitle(bundle.getString("warning.title"));
+        warningAlert.getDialogPane().setContent(new TextArea(warning));
+        warningAlert.showAndWait();
+    }
 }
