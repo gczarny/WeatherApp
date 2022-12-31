@@ -9,6 +9,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import pl.gczarny.utils.DialogUtils;
@@ -20,9 +27,30 @@ public class WeatherDataFetcher {
     public static WeatherData fetchWeatherData(String location) throws WeatherDataFetchException {
         JsonObject json = fetchWeatherDataFromApi(location);
         double temperature = getTemperature(json);
-        String description = getWeatherDescription(json);
         String id = getWeatherId(json);
-        return new WeatherData(temperature, description, id);
+        return new WeatherData(temperature, id);
+    }
+
+    public static List<WeatherData> fetchForecastData(String location) throws WeatherDataFetchException {
+        JsonObject jsonFetchedWeatherDataFromApi = fetchForecastWeatherDataFromApi(location);
+        JsonArray jsonForecastArray = jsonFetchedWeatherDataFromApi.getAsJsonArray("list");
+        List<WeatherData> forecastList = new ArrayList<WeatherData>();
+        for(int i = 0; i < jsonForecastArray.size(); i++){
+            JsonObject forecast = jsonForecastArray.get(i).getAsJsonObject();
+            long timestamp = forecast.get("dt").getAsLong();
+            String timestamp_txt = forecast.get("dt_txt").getAsString();
+            LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(timestamp), ZoneId.systemDefault());
+
+            if (timestamp_txt.endsWith("12:00:00")) {
+                double temperature = getTemperature(forecast);
+                String id = getWeatherId(forecast);
+                forecastList.add(new WeatherData(temperature, location, id, dateTime));
+            }
+            if(forecastList.size() == 5){
+                break;
+            }
+        }
+        return forecastList;
     }
 
     public static double getTemperature(JsonObject json){
@@ -64,6 +92,32 @@ public class WeatherDataFetcher {
         }catch (FileNotFoundException e) {
             throw new WeatherDataFetchException(FxmlUtils.getResourceBundle().getString("error.not.found"));
             //return Double.NaN;
+        } catch (Exception e) {
+            throw new WeatherDataFetchException(FxmlUtils.getResourceBundle().getString("error.not.found.all"));
+            //return Double.NaN;
+        }
+    }
+    private static JsonObject fetchForecastWeatherDataFromApi(String location) throws WeatherDataFetchException {
+        try{
+            String urlString = String.format(Config.getForecastApiUrl(), location);
+            URL url = new URL(urlString);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.connect();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuilder content = new StringBuilder();
+            while((inputLine = reader.readLine()) != null){
+                content.append(inputLine);
+            }
+            reader.close();
+            con.disconnect();
+            JsonObject json = new JsonParser().parse(content.toString()).getAsJsonObject();
+            return json;
+        }catch (FileNotFoundException e) {
+            throw new WeatherDataFetchException(FxmlUtils.getResourceBundle().getString("error.not.found"));
+            //return Double.NaN;
+
         } catch (Exception e) {
             throw new WeatherDataFetchException(FxmlUtils.getResourceBundle().getString("error.not.found.all"));
             //return Double.NaN;

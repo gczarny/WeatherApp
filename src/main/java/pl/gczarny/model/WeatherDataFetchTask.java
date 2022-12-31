@@ -3,6 +3,8 @@ package pl.gczarny.model;
 import javafx.concurrent.Task;
 import pl.gczarny.utils.exceptions.WeatherDataFetchException;
 
+import java.util.List;
+
 public class WeatherDataFetchTask extends Task<WeatherData> {
 
     private String location;
@@ -15,4 +17,5 @@ public class WeatherDataFetchTask extends Task<WeatherData> {
     protected WeatherData call() throws Exception {
         return WeatherDataFetcher.fetchWeatherData(location);
     }
+
 }
