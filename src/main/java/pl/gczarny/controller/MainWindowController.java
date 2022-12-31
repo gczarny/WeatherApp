@@ -30,11 +30,7 @@ public class MainWindowController {
     @FXML
     private TextField leftCityTextField;
     @FXML
-    private Label temperatureLeftSide;
-    @FXML
-    private Label dataStatusLabel;
-    @FXML
-    private ImageView leftImageView;
+    private Label statusLeftLabel;
     @FXML
     private HBox HBoxForecast;
     @FXML
@@ -44,47 +40,25 @@ public class MainWindowController {
             DialogUtils.warningDialog(FxmlUtils.getResourceBundle().getString("warning.left.empty.field"));
             return;
         }
-        dataStatusLabel.setText(FxmlUtils.getResourceBundle().getString("data.status.request"));
+        statusLeftLabel.setText(FxmlUtils.getResourceBundle().getString("data.status.request"));
 
         WeatherDataFetchTask fetchTask = new WeatherDataFetchTask(location);
         fetchTask.setOnSucceeded(event -> {
-            WeatherData weatherData = fetchTask.getValue();
-            temperatureLeftSide.setText(String.format("%.1f°C", weatherData.getTemperature()));
-            System.out.println(weatherData.getId());
-            dataStatusLabel.setText(FxmlUtils.getResourceBundle().getString("data.status.done"));
-            updateLeftImageView(weatherData.getId());
-            resetStatusLabelAfterDelay(dataStatusLabel);
-        });
-        fetchTask.setOnFailed(event -> {
-            Throwable exception = fetchTask.getException();
-            if(exception instanceof WeatherDataFetchException){
-                DialogUtils.errorDialog(exception.getMessage());
-                dataStatusLabel.setText("");
-            }else
-                DialogUtils.errorDialog(FxmlUtils.getResourceBundle().getString("error.not.found.all"));
-        });
-        new Thread(fetchTask).start();
-    }
-    @FXML
-    void forecastButton()  {
-        String location = leftCityTextField.getText();
-        ForecastDataFetchTask fetchTask = new ForecastDataFetchTask(location);
-
-        fetchTask.setOnSucceeded(event -> {
             List<WeatherData> weatherDataList = fetchTask.getValue();
             displayForecast(weatherDataList);
+            statusLeftLabel.setText(FxmlUtils.getResourceBundle().getString("data.status.done"));
+            resetStatusLabelAfterDelay(statusLeftLabel);
         });
         fetchTask.setOnFailed(event -> {
             Throwable exception = fetchTask.getException();
             if(exception instanceof WeatherDataFetchException){
                 DialogUtils.errorDialog(exception.getMessage());
-                dataStatusLabel.setText("");
+                statusLeftLabel.setText("");
             }else
                 DialogUtils.errorDialog(FxmlUtils.getResourceBundle().getString("error.not.found.all"));
         });
         new Thread(fetchTask).start();
     }
-
     @FXML
     void closeApplication() {
         if(DialogUtils.confirmCloseApplication().get() == ButtonType.OK){
@@ -92,7 +66,6 @@ public class MainWindowController {
             System.exit(0);
         }
     }
-
     @FXML
     void setCaspian() {
         Application.setUserAgentStylesheet(Application.STYLESHEET_CASPIAN);
@@ -108,29 +81,26 @@ public class MainWindowController {
         DialogUtils.dialogAboutApplication();
     }
 
-    void updateLeftImageView(String id){
-        String iconPath = WeatherIconManager.getIconPath(id);
-        Image image = new Image(iconPath);
-        leftImageView.setImage(image);
+    private ImageView updateLeftImageViews(String id){
+        ImageView weatherIcon = new ImageView();
+        Image icon = new Image(WeatherIconManager.getIconPath(id));
+        weatherIcon.setImage(icon);
+        weatherIcon.setFitHeight(55);
+        weatherIcon.setFitWidth(55);
+        return weatherIcon;
     }
 
     private void displayForecast(List<WeatherData> forecastList) {
         HBox forecastBox = new HBox();
         forecastBox.setSpacing(30);
         for (WeatherData forecastData : forecastList) {
-            System.out.println(forecastData.getId());
             VBox vBox = new VBox();
             vBox.setSpacing(10);
             Label temperatureLabel = new Label(String.format("%.1f°C", forecastData.getTemperature()));
             Label dateLabel = new Label(forecastData.getDateTime().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)));
             dateLabel.setWrapText(true);
             //Label locationLabel = new Label(forecastData.getLocation());
-            ImageView weatherIcon = new ImageView();
-            Image icon = new Image(WeatherIconManager.getIconPath(forecastData.getId()));
-            weatherIcon.setImage(icon);
-            weatherIcon.setFitHeight(55);
-            weatherIcon.setFitWidth(55);
-            vBox.getChildren().addAll(temperatureLabel, dateLabel, weatherIcon);
+            vBox.getChildren().addAll(temperatureLabel, dateLabel, updateLeftImageViews(forecastData.getId()));
             forecastBox.getChildren().add(vBox);
         }
         HBoxForecast.getChildren().add(forecastBox);
