@@ -80,11 +80,9 @@ public class WeatherDataFetcher {
             return json;
         }catch (FileNotFoundException e) {
             throw new WeatherDataFetchException(FxmlUtils.getResourceBundle().getString("error.not.found"));
-            //return Double.NaN;
 
         } catch (Exception e) {
             throw new WeatherDataFetchException(FxmlUtils.getResourceBundle().getString("error.not.found.all"));
-            //return Double.NaN;
         }
     }
 }

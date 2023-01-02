@@ -60,7 +60,8 @@
                   <Label fx:id="statusLeftLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="368.0" />
                </children>
             </VBox>
-            <HBox fx:id="HBoxForecast" layoutX="1.0" layoutY="214.0" prefHeight="188.0" prefWidth="596.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Label fx:id="city" alignment="CENTER" contentDisplay="CENTER" layoutX="230.0" layoutY="214.0" prefHeight="17.0" prefWidth="137.0" textAlignment="CENTER" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="229.0" />
+            <HBox fx:id="HBoxForecast" layoutY="244.0" prefHeight="174.0" prefWidth="596.0" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
           </children>
       
             </AnchorPane>

@@ -20,6 +20,7 @@ public class FxmlUtils {
             DialogUtils.errorDialog(e.getMessage());
         }
         return null;
+
     }
 
     public static ResourceBundle getResourceBundle(){
