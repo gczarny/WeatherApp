@@ -4,6 +4,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.Pane;
+
+import java.io.*;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 /*
@@ -25,5 +28,26 @@ public class FxmlUtils {
 
     public static ResourceBundle getResourceBundle(){
         return ResourceBundle.getBundle("bundles.messages");
+    }
+
+    public static void setConfigResourceProperty(String key, String value){
+        try (OutputStream output = new FileOutputStream("src/main/resources/bundles/config.properties")) {
+            Properties properties = new Properties();
+            properties.setProperty(key, value);
+            properties.store(output, null);
+        } catch(IOException e){
+            DialogUtils.errorDialog(e.getMessage());
+        }
+    }
+
+    public static String getConfigResourceProperty(String key){
+        try(InputStream input = new FileInputStream("src/main/resources/bundles/config.properties")){
+            Properties properties = new Properties();
+            properties.load(input);
+            return properties.getProperty(key);
+        } catch(IOException e){
+            DialogUtils.errorDialog(e.getMessage());
+        }
+        return null;
     }
 }

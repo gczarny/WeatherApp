@@ -84,6 +84,7 @@ public class MainWindowController{
             if(onButtonDemand){
                 statusLeftLabel.setText(FxmlUtils.getResourceBundle().getString("data.status.done"));
                 resetStatusLabelAfterDelay(statusLeftLabel);
+                FxmlUtils.setConfigResourceProperty("location", location);
             }
         });
         fetchTask.setOnFailed(event -> {
