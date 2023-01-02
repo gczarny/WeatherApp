@@ -10,12 +10,11 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<SplitPane dividerPositions="0.5" prefHeight="400.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.gczarny.controller.MainWindowController">
+<SplitPane dividerPositions="0.5" prefHeight="512.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.gczarny.controller.MainWindowController">
    <items>
       <AnchorPane prefHeight="528.0" prefWidth="761.0" style="-fx-background-image: url('/images/left_bg.png'); -fx-background-size: cover; -fx-background-position: center;">
           <children>
@@ -61,13 +60,15 @@
                </children>
             </VBox>
             <Label fx:id="city" alignment="CENTER" contentDisplay="CENTER" layoutX="230.0" layoutY="214.0" prefHeight="17.0" prefWidth="137.0" textAlignment="CENTER" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="229.0" />
-            <HBox fx:id="HBoxForecast" layoutY="244.0" prefHeight="174.0" prefWidth="596.0" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <HBox fx:id="HBoxForecast" layoutY="264.0" prefHeight="174.0" prefWidth="596.0" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <HBox layoutY="447.0" prefHeight="63.0" prefWidth="596.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0" />
+               </children>
+            </HBox>
           </children>
       
             </AnchorPane>
-      <AnchorPane prefHeight="615.0" prefWidth="527.0" style="-fx-background-image: url('/images/right_bg.png'); -fx-background-size: cover; -fx-background-position: center;">
-         <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="113.0" layoutY="266.0" pickOnBounds="true" preserveRatio="true" />
-         </children></AnchorPane>
+      <AnchorPane prefHeight="403.0" prefWidth="596.0" style="-fx-background-image: url('/images/right_bg.png'); -fx-background-size: cover; -fx-background-position: center;" />
    </items>
 </SplitPane>
