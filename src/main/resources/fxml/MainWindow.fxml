@@ -7,6 +7,8 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
@@ -14,61 +16,102 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<SplitPane dividerPositions="0.5" prefHeight="512.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.gczarny.controller.MainWindowController">
+<SplitPane dividerPositions="0.5" prefHeight="542.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.gczarny.controller.MainWindowController">
    <items>
-      <AnchorPane prefHeight="528.0" prefWidth="761.0" style="-fx-background-image: url('/images/left_bg.png'); -fx-background-size: cover; -fx-background-position: center;">
-          <children>
-            <MenuBar prefHeight="26.0" prefWidth="472.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-              <menus>
-                <Menu mnemonicParsing="false" text="Plik">
-                  <items>
-                    <MenuItem mnemonicParsing="false" onAction="#closeApplication" text="Zamknij" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edycja">
-                     <items>
-                        <RadioMenuItem mnemonicParsing="false" onAction="#setModena" selected="true" text="Modena">
-                           <toggleGroup>
-                              <ToggleGroup fx:id="styleGroup" />
-                           </toggleGroup>
-                        </RadioMenuItem>
-                        <RadioMenuItem mnemonicParsing="false" onAction="#setCaspian" text="Caspian" toggleGroup="$styleGroup" />
-                     </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Pomoc">
-                  <items>
-                    <MenuItem mnemonicParsing="false" onAction="#showAbout" text="O aplikacji" />
-                  </items>
-                </Menu>
-              </menus>
-            </MenuBar>
-            <VBox alignment="TOP_CENTER" layoutX="1.0" layoutY="26.0" prefHeight="188.0" prefWidth="596.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
-               <children>
-                  <Label alignment="CENTER" prefHeight="33.0" prefWidth="472.0" text="%your.location" />
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="369.0" text="%set.location" />
-                  <TextField fx:id="leftCityTextField" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="583.0" scaleShape="false">
-                     <VBox.margin>
-                        <Insets bottom="2.0" />
-                     </VBox.margin>
-                  </TextField>
-                    <Button alignment="CENTER" onAction="#ackLeftLocationButton" prefHeight="25.0" prefWidth="89.0" text="%acknowledge" textAlignment="CENTER">
-                     <VBox.margin>
-                        <Insets bottom="15.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Label fx:id="statusLeftLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="368.0" />
-               </children>
-            </VBox>
-            <Label fx:id="city" alignment="CENTER" contentDisplay="CENTER" layoutX="230.0" layoutY="214.0" prefHeight="17.0" prefWidth="137.0" textAlignment="CENTER" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="229.0" />
-            <HBox fx:id="HBoxForecast" layoutY="264.0" prefHeight="174.0" prefWidth="596.0" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-            <HBox layoutY="447.0" prefHeight="63.0" prefWidth="596.0">
-               <children>
-                  <VBox prefHeight="200.0" prefWidth="100.0" />
-               </children>
-            </HBox>
-          </children>
-      
+      <ScrollPane>
+         <content>
+            <AnchorPane prefHeight="534.0" prefWidth="624.0" style="-fx-background-image: url('/images/left_bg.png'); -fx-background-size: cover; -fx-background-position: center;">
+                <children>
+                  <MenuBar prefHeight="26.0" prefWidth="472.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <menus>
+                      <Menu mnemonicParsing="false" text="Plik">
+                        <items>
+                          <MenuItem mnemonicParsing="false" onAction="#closeApplication" text="Zamknij" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Edycja">
+                           <items>
+                              <RadioMenuItem mnemonicParsing="false" onAction="#setModena" selected="true" text="Modena">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="styleGroup" />
+                                 </toggleGroup>
+                              </RadioMenuItem>
+                              <RadioMenuItem mnemonicParsing="false" onAction="#setCaspian" text="Caspian" toggleGroup="$styleGroup" />
+                           </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Pomoc">
+                        <items>
+                          <MenuItem mnemonicParsing="false" onAction="#showAbout" text="O aplikacji" />
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+                  <VBox alignment="TOP_CENTER" layoutX="1.0" layoutY="26.0" prefHeight="188.0" prefWidth="596.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="33.0" prefWidth="472.0" text="%your.location" />
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="369.0" text="%set.location" />
+                        <TextField fx:id="leftCityTextField" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="583.0" scaleShape="false">
+                           <VBox.margin>
+                              <Insets bottom="2.0" />
+                           </VBox.margin>
+                        </TextField>
+                          <Button alignment="CENTER" onAction="#ackLeftLocationButton" prefHeight="25.0" prefWidth="89.0" text="%acknowledge" textAlignment="CENTER">
+                           <VBox.margin>
+                              <Insets bottom="15.0" />
+                           </VBox.margin>
+                        </Button>
+                        <Label fx:id="statusLeftLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="368.0" />
+                     </children>
+                  </VBox>
+                  <Label fx:id="city" alignment="CENTER" contentDisplay="CENTER" layoutX="230.0" layoutY="214.0" prefHeight="17.0" prefWidth="137.0" textAlignment="CENTER" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="229.0" AnchorPane.topAnchor="214.0" />
+                  <HBox fx:id="HBoxForecast" layoutY="264.0" prefHeight="174.0" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <Separator layoutX="16.0" layoutY="447.0" prefHeight="0.0" prefWidth="562.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="18.0" />
+                  <HBox fx:id="HboxDataOfVBoxElement" layoutY="481.0" prefHeight="63.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <children>
+                        <Label fx:id="vboxInstanceData" alignment="CENTER" contentDisplay="CENTER" prefHeight="63.0" prefWidth="92.0" text="Date" />
+                        <Separator orientation="VERTICAL" prefHeight="200.0" />
+                        <VBox prefHeight="63.0">
+                           <children>
+                              <Label alignment="CENTER" prefHeight="22.0" prefWidth="126.0" text="Pressure" />
+                              <Label fx:id="vboxInstancePressure" alignment="CENTER" contentDisplay="CENTER" prefHeight="41.0" prefWidth="125.0" text="Label" />
+                           </children>
+                        </VBox>
+                        <Separator orientation="VERTICAL" prefHeight="200.0" />
+                        <VBox prefHeight="63.0">
+                           <children>
+                              <Label alignment="CENTER" prefHeight="22.0" prefWidth="126.0" text="Humidity" />
+                              <Label fx:id="vboxInstanceHumidity" alignment="CENTER" contentDisplay="CENTER" prefHeight="41.0" prefWidth="125.0" text="Label" />
+                           </children>
+                        </VBox>
+                        <Separator orientation="VERTICAL" prefHeight="200.0" />
+                        <VBox prefHeight="63.0">
+                           <children>
+                              <Label alignment="CENTER" prefHeight="22.0" prefWidth="126.0" text="Wind speed" />
+                              <Label fx:id="vboxInstanceWindSpeed" alignment="CENTER" contentDisplay="CENTER" prefHeight="41.0" prefWidth="125.0" text="Label" />
+                           </children>
+                        </VBox>
+                        <Separator orientation="VERTICAL" prefHeight="200.0" />
+                        <VBox prefHeight="63.0">
+                           <children>
+                              <Label alignment="CENTER" prefHeight="22.0" prefWidth="126.0" text="Wind max" />
+                              <Label fx:id="vboxInstanceWindMax" alignment="CENTER" contentDisplay="CENTER" prefHeight="41.0" prefWidth="125.0" text="Label" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                </children>
+            
+                                    </AnchorPane>
+         </content>
+      </ScrollPane>
+      <ScrollPane>
+         <content>
+            <AnchorPane prefHeight="403.0" prefWidth="596.0" style="-fx-background-image: url('/images/right_bg.png'); -fx-background-size: cover; -fx-background-position: center;">
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
             </AnchorPane>
-      <AnchorPane prefHeight="403.0" prefWidth="596.0" style="-fx-background-image: url('/images/right_bg.png'); -fx-background-size: cover; -fx-background-position: center;" />
+         </content>
+      </ScrollPane>
    </items>
 </SplitPane>
