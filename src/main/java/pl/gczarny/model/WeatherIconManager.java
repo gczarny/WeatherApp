@@ -36,27 +36,4 @@ public class WeatherIconManager {
     public static String getIconPath(String id) {
         return getIconUrl(id);
     }
-
-
-
-/*    private static final String SUNNY_ICON_URL = "/icons/sunny.png";
-    private static final String CLOUDY_ICON_URL = "/icons/cloudy.png";
-    private static final String RAINY_ICON_URL = "/icons/rainy.png";
-    private static final String PARTLY_CLOUDY_ICON_URL = "/icons/partly_cloudy.png";
-    private static final String STORMY_ICON_URL = "/icons/stormy.png";
-
-    public static Image getWeatherIcon(String weatherDescription) {
-        if (weatherDescription.contains("sunny")) {
-            return new Image(SUNNY_ICON_URL);
-        } else if (weatherDescription.contains("cloudy")) {
-            return new Image(CLOUDY_ICON_URL);
-        } else if (weatherDescription.contains("rain")) {
-            return new Image(RAINY_ICON_URL);
-        } else if (weatherDescription.contains("snow")) {
-            return new Image(STORMY_ICON_URL);
-        } else {
-            // w przypadku braku pasującego opisu pogody zwróć obrazek z chmurami
-            return new Image(CLOUDY_ICON_URL);
-        }
-    }*/
 }

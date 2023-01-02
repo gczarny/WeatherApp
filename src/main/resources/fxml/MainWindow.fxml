@@ -10,13 +10,12 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<SplitPane dividerPositions="0.5" prefHeight="552.0" prefWidth="951.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.gczarny.controller.MainWindowController">
+<SplitPane dividerPositions="0.5" prefHeight="400.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.gczarny.controller.MainWindowController">
    <items>
       <AnchorPane prefHeight="528.0" prefWidth="761.0" style="-fx-background-image: url('/images/left_bg.png'); -fx-background-size: cover; -fx-background-position: center;">
           <children>
@@ -44,11 +43,11 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <VBox alignment="TOP_CENTER" layoutX="1.0" layoutY="26.0" prefHeight="188.0" prefWidth="493.0">
+            <VBox alignment="TOP_CENTER" layoutX="1.0" layoutY="26.0" prefHeight="188.0" prefWidth="596.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
                <children>
                   <Label alignment="CENTER" prefHeight="33.0" prefWidth="472.0" text="%your.location" />
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="369.0" text="%set.location" />
-                  <TextField fx:id="leftCityTextField" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="250.0" scaleShape="false">
+                  <TextField fx:id="leftCityTextField" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="583.0" scaleShape="false">
                      <VBox.margin>
                         <Insets bottom="2.0" />
                      </VBox.margin>
@@ -58,28 +57,15 @@
                         <Insets bottom="15.0" />
                      </VBox.margin>
                   </Button>
-                  <Label fx:id="dataStatusLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="368.0" text="Helplabel" />
+                  <Label fx:id="statusLeftLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="368.0" />
                </children>
             </VBox>
-            <HBox layoutX="1.0" layoutY="214.0" prefHeight="100.0" prefWidth="493.0">
-               <children>
-                  <VBox prefHeight="121.0" prefWidth="89.0">
-                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="120.0" text="Temperature:" />
-                        <Label fx:id="temperatureLeftSide" alignment="CENTER" contentDisplay="CENTER" prefHeight="29.0" prefWidth="120.0" />
-                        <ImageView fx:id="leftImageView" fitHeight="55.0" fitWidth="104.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-                           <effect>
-                              <Shadow />
-                           </effect>
-                        </ImageView>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
+            <Label fx:id="city" alignment="CENTER" contentDisplay="CENTER" layoutX="230.0" layoutY="214.0" prefHeight="17.0" prefWidth="137.0" textAlignment="CENTER" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="229.0" />
+            <HBox fx:id="HBoxForecast" layoutY="244.0" prefHeight="174.0" prefWidth="596.0" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
           </children>
       
             </AnchorPane>
-      <AnchorPane prefHeight="519.0" prefWidth="433.0" style="-fx-background-image: url('/images/right_bg.png'); -fx-background-size: cover; -fx-background-position: center;">
+      <AnchorPane prefHeight="615.0" prefWidth="527.0" style="-fx-background-image: url('/images/right_bg.png'); -fx-background-size: cover; -fx-background-position: center;">
          <children>
             <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="113.0" layoutY="266.0" pickOnBounds="true" preserveRatio="true" />
          </children></AnchorPane>
