@@ -27,8 +27,11 @@ import pl.gczarny.utils.DialogUtils;
 import pl.gczarny.utils.FxmlUtils;
 import pl.gczarny.utils.exceptions.WeatherDataFetchException;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Formatter;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -131,8 +134,8 @@ public class MainWindowController{
             if(onButtonDemand){
                 statusLeftLabel.setText(FxmlUtils.getResourceBundle().getString("data.status.done"));
                 resetStatusLabelAfterDelay(statusLeftLabel);
-                city.setText(location);
-                FxmlUtils.setConfigResourceProperty("location", location);
+                city.setText(weatherDataList.get(0).getLocation());
+                FxmlUtils.setConfigResourceProperty("location", weatherDataList.get(0).getLocation());
             }
         });
         fetchTask.setOnFailed(event -> {
@@ -141,6 +144,7 @@ public class MainWindowController{
                 DialogUtils.errorDialog(exception.getMessage());
                 statusLeftLabel.setText("");
             }else {
+                exception.printStackTrace();
                 DialogUtils.errorDialog(FxmlUtils.getResourceBundle().getString("error.not.found.all"));
             }
         });

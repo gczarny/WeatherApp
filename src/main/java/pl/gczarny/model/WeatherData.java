@@ -57,4 +57,7 @@ public class WeatherData {
     public int getPopulation() {
         return population;
     }
+    public String getLocation() {
+        return location;
+    }
 }
