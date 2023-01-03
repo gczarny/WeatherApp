@@ -8,26 +8,14 @@ public class WeatherData {
     private double pressure;
     private double windSpeed, windDeg;
     private double humidity;
+    private int population;
     private String id;
     private String location;
     LocalDateTime localDateTime;
 
-
-    public WeatherData(double temperature, String id){
-        this.temperature = temperature;
-        this.id = id;
-    }
-
-    /*public WeatherData(double temperature, String location, String id, LocalDateTime dateTime) {
-        this.temperature = temperature;
-        this.id = id;
-        this.location = location;
-        this.localDateTime = dateTime;
-    }*/
-
     public WeatherData(double temperature, double pressure, double windSpeed,
                        double windDeg, double humidity, String id, String location,
-                       LocalDateTime localDateTime) {
+                       LocalDateTime localDateTime, int population) {
         this.temperature = temperature;
         this.pressure = pressure;
         this.windSpeed = windSpeed;
@@ -36,6 +24,7 @@ public class WeatherData {
         this.id = id;
         this.location = location;
         this.localDateTime = localDateTime;
+        this.population = population;
     }
 
     public double getTemperature() {
@@ -44,10 +33,6 @@ public class WeatherData {
 
     public String getId() {
         return id;
-    }
-
-    public String getLocation() {
-        return location;
     }
 
     public LocalDateTime getDateTime() {
@@ -68,5 +53,8 @@ public class WeatherData {
 
     public double getHumidity() {
         return humidity;
+    }
+    public int getPopulation() {
+        return population;
     }
 }

@@ -26,7 +26,7 @@ public class App extends Application
 
     @Override
     public void start(Stage stage) throws Exception {
-        //Locale.setDefault(new Locale("pl"));
+        Locale.setDefault(new Locale("pl"));
 /*        FXMLLoader loader = new FXMLLoader(this.getClass().getResource(FXML_MAIN_WINDOW));
         ResourceBundle bundle = ResourceBundle.getBundle("bundles.messages");
         loader.setResources(bundle);
@@ -34,6 +34,8 @@ public class App extends Application
         SplitPane parent = FxmlUtils.fxmlLoader(FXML_MAIN_WINDOW);
         Scene scene = new Scene(parent);
         stage.setScene(scene);
+        stage.setMaxWidth(1290);
+        stage.setMaxHeight(600);
         stage.setTitle(FxmlUtils.getResourceBundle().getString("title.application"));
         stage.show();
 
