@@ -7,68 +7,186 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.5" prefHeight="512.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.gczarny.controller.MainWindowController">
+<SplitPane dividerPositions="0.5" prefHeight="542.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.gczarny.controller.MainWindowController">
    <items>
-      <AnchorPane prefHeight="528.0" prefWidth="761.0" style="-fx-background-image: url('/images/left_bg.png'); -fx-background-size: cover; -fx-background-position: center;">
-          <children>
-            <MenuBar prefHeight="26.0" prefWidth="472.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-              <menus>
-                <Menu mnemonicParsing="false" text="Plik">
-                  <items>
-                    <MenuItem mnemonicParsing="false" onAction="#closeApplication" text="Zamknij" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edycja">
-                     <items>
-                        <RadioMenuItem mnemonicParsing="false" onAction="#setModena" selected="true" text="Modena">
-                           <toggleGroup>
-                              <ToggleGroup fx:id="styleGroup" />
-                           </toggleGroup>
-                        </RadioMenuItem>
-                        <RadioMenuItem mnemonicParsing="false" onAction="#setCaspian" text="Caspian" toggleGroup="$styleGroup" />
-                     </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Pomoc">
-                  <items>
-                    <MenuItem mnemonicParsing="false" onAction="#showAbout" text="O aplikacji" />
-                  </items>
-                </Menu>
-              </menus>
-            </MenuBar>
-            <VBox alignment="TOP_CENTER" layoutX="1.0" layoutY="26.0" prefHeight="188.0" prefWidth="596.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
-               <children>
-                  <Label alignment="CENTER" prefHeight="33.0" prefWidth="472.0" text="%your.location" />
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="369.0" text="%set.location" />
-                  <TextField fx:id="leftCityTextField" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="583.0" scaleShape="false">
-                     <VBox.margin>
-                        <Insets bottom="2.0" />
-                     </VBox.margin>
-                  </TextField>
-                    <Button alignment="CENTER" onAction="#ackLeftLocationButton" prefHeight="25.0" prefWidth="89.0" text="%acknowledge" textAlignment="CENTER">
-                     <VBox.margin>
-                        <Insets bottom="15.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Label fx:id="statusLeftLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="368.0" />
-               </children>
-            </VBox>
-            <Label fx:id="city" alignment="CENTER" contentDisplay="CENTER" layoutX="230.0" layoutY="214.0" prefHeight="17.0" prefWidth="137.0" textAlignment="CENTER" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="229.0" />
-            <HBox fx:id="HBoxForecast" layoutY="264.0" prefHeight="174.0" prefWidth="596.0" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-            <HBox layoutY="447.0" prefHeight="63.0" prefWidth="596.0">
-               <children>
-                  <VBox prefHeight="200.0" prefWidth="100.0" />
-               </children>
-            </HBox>
-          </children>
-      
-            </AnchorPane>
-      <AnchorPane prefHeight="403.0" prefWidth="596.0" style="-fx-background-image: url('/images/right_bg.png'); -fx-background-size: cover; -fx-background-position: center;" />
+      <ScrollPane>
+         <content>
+            <AnchorPane prefHeight="534.0" prefWidth="624.0" style="-fx-background-image: url('/images/left_bg.png'); -fx-background-size: cover; -fx-background-position: center;">
+                <children>
+                  <MenuBar prefHeight="26.0" prefWidth="472.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <menus>
+                      <Menu mnemonicParsing="false" text="Plik">
+                        <items>
+                          <MenuItem mnemonicParsing="false" onAction="#closeApplication" text="Zamknij" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Edycja">
+                           <items>
+                              <RadioMenuItem mnemonicParsing="false" onAction="#setModena" selected="true" text="Modena">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="styleGroup" />
+                                 </toggleGroup>
+                              </RadioMenuItem>
+                              <RadioMenuItem mnemonicParsing="false" onAction="#setCaspian" text="Caspian" toggleGroup="$styleGroup" />
+                           </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Pomoc">
+                        <items>
+                          <MenuItem mnemonicParsing="false" onAction="#showAbout" text="O aplikacji" />
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+                  <VBox alignment="TOP_CENTER" layoutX="1.0" layoutY="26.0" prefHeight="188.0" prefWidth="596.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
+                     <children>
+                        <Label alignment="CENTER" lineSpacing="4.0" prefHeight="33.0" style="-fx-line-spacing: 4;" text="%your.location" underline="true">
+                           <font>
+                              <Font name="Calibri Bold Italic" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="369.0" text="%set.location">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <HBox maxWidth="350.0">
+                           <VBox.margin>
+                              <Insets bottom="2.0" />
+                           </VBox.margin>
+                           <children>
+                              <TextField fx:id="leftCityTextField" alignment="CENTER" maxWidth="-Infinity" prefWidth="350.0" promptText="%location" scaleShape="false">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </TextField>
+                              <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#refreshButton" prefHeight="22.0" prefWidth="22.0" text="Refresh">
+                                 <graphic>
+                                    <ImageView fitHeight="33.0" fitWidth="29.0">
+                                       <image>
+                                          <Image url="@../images/refresh_icon.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
+                          <Button alignment="CENTER" onAction="#ackLeftLocationButton" prefHeight="36.0" prefWidth="134.0" text="%acknowledge" textAlignment="CENTER">
+                           <VBox.margin>
+                              <Insets bottom="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <Label fx:id="statusLeftLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="368.0" />
+                     </children>
+                  </VBox>
+                  <HBox layoutX="152.0" layoutY="221.0" prefHeight="34.0" prefWidth="316.0" style="-fx-border-style: solid;" AnchorPane.bottomAnchor="279.0" AnchorPane.leftAnchor="152.0" AnchorPane.rightAnchor="156.0" AnchorPane.topAnchor="221.0">
+                     <children>
+                        <VBox prefHeight="34.0" prefWidth="158.0">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="158.0" text="%city" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="city" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="158.0" textAlignment="CENTER" />
+                           </children>
+                           <effect>
+                              <Lighting>
+                                 <bumpInput>
+                                    <Shadow />
+                                 </bumpInput>
+                                 <light>
+                                    <Light.Distant>
+                                       <color>
+                                          <Color red="0.43421053886413574" green="0.16885964572429657" blue="0.16885964572429657" />
+                                       </color>
+                                    </Light.Distant>
+                                 </light>
+                              </Lighting>
+                           </effect>
+                        </VBox>
+                        <Separator orientation="VERTICAL" prefHeight="200.0" />
+                        <VBox prefHeight="200.0" prefWidth="158.0">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="158.0" text="%population" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="population" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="158.0" textAlignment="CENTER" />
+                           </children>
+                           <effect>
+                              <InnerShadow offsetX="10.0" offsetY="10.0" />
+                           </effect>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <HBox fx:id="HBoxForecast" layoutY="264.0" prefHeight="174.0" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <Separator layoutX="16.0" layoutY="447.0" prefHeight="0.0" prefWidth="562.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="18.0" />
+                  <HBox layoutY="481.0" prefHeight="63.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <children>
+                        <Label fx:id="vboxInstanceData" alignment="CENTER" contentDisplay="CENTER" prefHeight="63.0" prefWidth="92.0" text="%date" textAlignment="CENTER">
+                           <padding>
+                              <Insets left="4.0" />
+                           </padding>
+                           <HBox.margin>
+                              <Insets left="3.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Separator orientation="VERTICAL" prefHeight="200.0" />
+                        <VBox prefHeight="63.0">
+                           <children>
+                              <Label alignment="CENTER" prefHeight="22.0" prefWidth="126.0" text="%pressure" />
+                              <Label fx:id="vboxInstancePressure" alignment="CENTER" contentDisplay="CENTER" prefHeight="41.0" prefWidth="125.0" />
+                           </children>
+                        </VBox>
+                        <Separator orientation="VERTICAL" prefHeight="200.0" />
+                        <VBox prefHeight="63.0">
+                           <children>
+                              <Label alignment="CENTER" prefHeight="22.0" prefWidth="126.0" text="%humidity" />
+                              <Label fx:id="vboxInstanceHumidity" alignment="CENTER" contentDisplay="CENTER" prefHeight="41.0" prefWidth="125.0" />
+                           </children>
+                        </VBox>
+                        <Separator orientation="VERTICAL" prefHeight="200.0" />
+                        <VBox prefHeight="63.0">
+                           <children>
+                              <Label alignment="CENTER" prefHeight="22.0" prefWidth="126.0" text="%wind.speed" />
+                              <Label fx:id="vboxInstanceWindSpeed" alignment="CENTER" contentDisplay="CENTER" prefHeight="41.0" prefWidth="125.0" />
+                           </children>
+                        </VBox>
+                        <Separator orientation="VERTICAL" prefHeight="200.0" />
+                        <VBox prefHeight="63.0">
+                           <children>
+                              <Label alignment="CENTER" prefHeight="22.0" prefWidth="126.0" text="%wind.deg" />
+                              <Label fx:id="vboxInstanceWindMax" alignment="CENTER" contentDisplay="CENTER" prefHeight="41.0" prefWidth="125.0" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                </children>
+            
+                                    </AnchorPane>
+         </content>
+      </ScrollPane>
+      <ScrollPane />
    </items>
 </SplitPane>

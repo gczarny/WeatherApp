@@ -8,7 +8,10 @@ import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -22,18 +25,20 @@ import pl.gczarny.utils.exceptions.WeatherDataFetchException;
 public class WeatherDataFetcher {
 
     public static List<WeatherData> fetchForecastData(String location) throws WeatherDataFetchException {
-        JsonObject jsonFetchedWeatherDataFromApi = fetchForecastWeatherDataFromApi(location);
-        JsonArray jsonForecastArray = jsonFetchedWeatherDataFromApi.getAsJsonArray("list");
+        JsonObject fetchedJsonData = fetchForecastWeatherDataFromApi(location);
+        JsonArray jsonForecastArray = fetchedJsonData.getAsJsonArray("list");
+        JsonObject jsonCityObject = fetchedJsonData.getAsJsonObject("city");
         List<WeatherData> forecastList = new ArrayList<WeatherData>();
         for(int i = 0; i < jsonForecastArray.size(); i++){
             JsonObject forecast = jsonForecastArray.get(i).getAsJsonObject();
             long timestamp = forecast.get("dt").getAsLong();
             String timestamp_txt = forecast.get("dt_txt").getAsString();
             LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(timestamp), ZoneId.systemDefault());
-            if (timestamp_txt.endsWith("12:00:00")) {
-                double temperature = getTemperature(forecast);
-                String id = getWeatherId(forecast);
-                forecastList.add(new WeatherData(temperature, location, id, dateTime));
+            if (dateTime.toLocalDate().isEqual(LocalDate.now()) && forecastList.size() == 0 ||
+                    (dateTime.toLocalDate().isAfter(LocalDate.now()) && timestamp_txt.endsWith("12:00:00"))) {
+                forecastList.add(new WeatherData(getTemperature(forecast), getPressure(forecast),
+                                                getWindSpeed(forecast), getWindDeg(forecast), getHumidity(forecast),
+                                                getWeatherId(forecast), location, dateTime, getPopulation(jsonCityObject)));
             }
             if(forecastList.size() == 5){
                 break;
@@ -43,27 +48,42 @@ public class WeatherDataFetcher {
     }
 
     public static double getTemperature(JsonObject json){
-        //JsonObject json = fetchWeatherDataFromApi(location);
         JsonObject main = json.getAsJsonObject("main");
-        double temperatureInKelvins = main.get("temp").getAsDouble();
-        return temperatureInKelvins  - 273.15;
+        return main.get("temp").getAsDouble();
     }
 
-    public static String getWeatherDescription(JsonObject json){
-        //JsonObject json = fetchWeatherDataFromApi(location);
-        JsonArray weatherArray = json.getAsJsonArray("weather");
-        JsonObject weather = weatherArray.get(0).getAsJsonObject();
-        return weather.get("description").getAsString();
-    }
     public static String getWeatherId(JsonObject json){
-        //JsonObject json = fetchWeatherDataFromApi(location);
         JsonArray weatherArray = json.getAsJsonArray("weather");
         JsonObject weather = weatherArray.get(0).getAsJsonObject();
         return weather.get("icon").getAsString();
     }
+    public static double getHumidity(JsonObject json){
+        JsonObject main = json.getAsJsonObject("main");
+        double humidity = main.get("humidity").getAsDouble();
+        return humidity;
+    }
+    public static double getPressure(JsonObject json){
+        JsonObject main = json.getAsJsonObject("main");
+        double pressure = main.get("pressure").getAsDouble();
+        return pressure;
+    }
+    public static double getWindSpeed(JsonObject json){
+        JsonObject main = json.getAsJsonObject("wind");
+        double speed = main.get("speed").getAsDouble();
+        return speed;
+    }
+    public static double getWindDeg(JsonObject json){
+        JsonObject main = json.getAsJsonObject("wind");
+        double deg = main.get("deg").getAsDouble();
+        return deg;
+    }
+    public static int getPopulation(JsonObject json){
+        int city = json.get("population").getAsInt();
+        return city;
+    }
     private static JsonObject fetchForecastWeatherDataFromApi(String location) throws WeatherDataFetchException {
         try{
-            String urlString = String.format(Config.getForecastApiUrl(), location);
+            String urlString = String.format(Config.getForecastApiUrl(), URLEncoder.encode(location, StandardCharsets.UTF_8.toString()));
             URL url = new URL(urlString);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
