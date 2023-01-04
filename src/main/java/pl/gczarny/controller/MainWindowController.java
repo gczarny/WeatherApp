@@ -10,10 +10,7 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,16 +24,21 @@ import pl.gczarny.utils.DialogUtils;
 import pl.gczarny.utils.FxmlUtils;
 import pl.gczarny.utils.exceptions.WeatherDataFetchException;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.Formatter;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public class MainWindowController{
+
+    @FXML
+    private AnchorPane leftAnchrPane;
+
+    @FXML
+    private SplitPane splitPane;
+    @FXML
+    private ScrollPane leftScrollPane;
     @FXML
     private TextField leftCityTextField;
     @FXML
@@ -128,8 +130,9 @@ public class MainWindowController{
             displayForecastInHBox(weatherDataList);
             setInnerShadowForFirstVBox(weatherDataList.get(0));
             population.setText(Integer.toString(weatherDataList.get(0).getPopulation()));
+            WeatherBackgroundManager.changeBackground(weatherDataList.get(0).getId(), leftAnchrPane, LocalTime.now());
             if(weatherDataList.get(0).getPopulation() >= 1000000){
-                population.setText(">" + Integer.toString(weatherDataList.get(0).getPopulation()));
+                population.setText(">" + weatherDataList.get(0).getPopulation());
             }
             if(onButtonDemand){
                 statusLeftLabel.setText(FxmlUtils.getResourceBundle().getString("data.status.done"));
@@ -167,19 +170,14 @@ public class MainWindowController{
         Background background = new Background(backgroundFill);
         HBoxForecast.setBackground(background);
         for (WeatherData forecastData : forecastList) {
-            VBox vBox = new VBox();
-            vBox.setPrefWidth(HBoxForecast.getWidth() / forecastList.size());
-            vBox.setSpacing(10);
-            vBox.setPadding(new Insets(10, 10, 10, 10));
-            vBox.setPrefWidth(Region.USE_COMPUTED_SIZE);
-            vBox.setAlignment(Pos.CENTER);
+            VBox vBox = getVBox(forecastList);
             Label temperatureLabel = new Label(String.format("%.1f°C", forecastData.getTemperature()));
             temperatureLabel.setPrefSize(150, 150);
             Label dateLabel = new Label(forecastData.getDateTime().format(DateTimeFormatter.ISO_DATE));
             dateLabel.setTextAlignment(TextAlignment.JUSTIFY);
             dateLabel.setAlignment(Pos.CENTER);
             dateLabel.setWrapText(true);
-            vBox.getChildren().addAll(temperatureLabel, dateLabel, new Separator(), updateLeftImageViews(forecastData.getId()));
+            vBox.getChildren().addAll(temperatureLabel, dateLabel, new Separator(), updateLeftImageViews(forecastData.getIcon()));
             vBox.getProperties().put("weatherData", forecastData);
             makeVBoxClickable(vBox, forecastData);
             vBox.setCursor(Cursor.HAND);
@@ -190,9 +188,7 @@ public class MainWindowController{
 
     private void makeVBoxClickable(VBox vBox, WeatherData weatherData) {
         vBox.setOnMouseClicked(event -> {
-            vBox.setEffect(new InnerShadow(10, Color.RED));
-            setDataInHboxDataOfVBoxClickedElement(weatherData);
-            // Delete effects from other VBox
+            setInnerShadowEffectOnVBoxAndSetData(vBox, weatherData);
             for (Node node : HBoxForecast.getChildren()) {
                 if (node instanceof VBox && node != vBox) {
                     ((VBox) node).setEffect(null);
@@ -206,13 +202,17 @@ public class MainWindowController{
             Node firstChild = HBoxForecast.getChildren().get(0);
             if (firstChild instanceof VBox) {
                 VBox firstVBox = (VBox) firstChild;
-                firstVBox.setEffect(new InnerShadow(10, Color.RED));
-                setDataInHboxDataOfVBoxClickedElement(weatherData);
+                setInnerShadowEffectOnVBoxAndSetData(firstVBox, weatherData);
             }
         }
     }
 
-    private void setDataInHboxDataOfVBoxClickedElement(WeatherData weatherData){
+    private void setInnerShadowEffectOnVBoxAndSetData(VBox vbox, WeatherData weatherData){
+        vbox.setEffect(new InnerShadow(10, Color.RED));
+        setDataInHboxDataTakemFromVBoxClicked(weatherData);
+    }
+
+    private void setDataInHboxDataTakemFromVBoxClicked(WeatherData weatherData){
         vboxInstanceData.setText(weatherData.getDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE));
         vboxInstanceData.setWrapText(true);
         vboxInstancePressure.setText(String.valueOf(weatherData.getPressure()) + " hPa");
@@ -235,8 +235,18 @@ public class MainWindowController{
         return separator;
     }
 
+    private VBox getVBox(List<WeatherData> forecastList){
+        VBox vBox = new VBox();
+        vBox.setPrefWidth(HBoxForecast.getWidth() / forecastList.size());
+        vBox.setSpacing(10);
+        vBox.setPadding(new Insets(10, 10, 10, 10));
+        vBox.setPrefWidth(Region.USE_COMPUTED_SIZE);
+        vBox.setAlignment(Pos.CENTER);
+        return vBox;
+    }
+
     private void resetStatusLabelAfterDelay(Label label) {
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5), event -> label.setText("")));
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> label.setText("")));
         timeline.play();
     }
 }

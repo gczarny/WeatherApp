@@ -9,7 +9,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.ByteBuffer;
 import java.nio.charset.*;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -39,7 +38,8 @@ public class WeatherDataFetcher {
                     (dateTime.toLocalDate().isAfter(LocalDate.now()) && timestamp_txt.endsWith("12:00:00"))) {
                 forecastList.add(new WeatherData(getTemperature(forecast), getPressure(forecast),
                                                 getWindSpeed(forecast), getWindDeg(forecast), getHumidity(forecast),
-                                                getWeatherId(forecast), getLocation(jsonCityObject), dateTime, getPopulation(jsonCityObject)));
+                                                getWeatherIcon(forecast), getLocation(jsonCityObject), dateTime,
+                                                getPopulation(jsonCityObject), getWeatherId(forecast)));
             }
             if(forecastList.size() == 5){
                 break;
@@ -53,11 +53,17 @@ public class WeatherDataFetcher {
         return main.get("temp").getAsDouble();
     }
 
-    public static String getWeatherId(JsonObject json){
+    public static String getWeatherIcon(JsonObject json){
         JsonArray weatherArray = json.getAsJsonArray("weather");
         JsonObject weather = weatherArray.get(0).getAsJsonObject();
         return weather.get("icon").getAsString();
     }
+    public static int getWeatherId(JsonObject json){
+        JsonArray weatherArray = json.getAsJsonArray("weather");
+        JsonObject id = weatherArray.get(0).getAsJsonObject();
+        return id.get("id").getAsInt();
+    }
+
     public static double getHumidity(JsonObject json){
         JsonObject main = json.getAsJsonObject("main");
         double humidity = main.get("humidity").getAsDouble();

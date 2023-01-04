@@ -24,11 +24,11 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.5" prefHeight="542.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.gczarny.controller.MainWindowController">
+<SplitPane fx:id="splitPane" dividerPositions="0.5" prefHeight="542.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.gczarny.controller.MainWindowController">
    <items>
-      <ScrollPane>
+      <ScrollPane fx:id="leftScrollPane">
          <content>
-            <AnchorPane prefHeight="534.0" prefWidth="624.0" style="-fx-background-image: url('/images/left_bg.png'); -fx-background-size: cover; -fx-background-position: center;">
+            <AnchorPane fx:id="leftAnchrPane" prefHeight="534.0" prefWidth="624.0">
                 <children>
                   <MenuBar prefHeight="26.0" prefWidth="472.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <menus>
@@ -58,13 +58,11 @@
                      <children>
                         <Label alignment="CENTER" lineSpacing="4.0" prefHeight="33.0" style="-fx-line-spacing: 4;" text="%your.location" underline="true">
                            <font>
-                              <Font name="Calibri Bold Italic" size="14.0" />
+                              <Font name="Calibri Bold Italic" size="24.0" />
                            </font>
-                        </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="369.0" text="%set.location">
-                           <font>
-                              <Font size="17.0" />
-                           </font>
+                           <VBox.margin>
+                              <Insets bottom="15.0" />
+                           </VBox.margin>
                         </Label>
                         <HBox maxWidth="350.0">
                            <VBox.margin>
@@ -98,7 +96,7 @@
                         <Label fx:id="statusLeftLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="368.0" />
                      </children>
                   </VBox>
-                  <HBox layoutX="152.0" layoutY="221.0" prefHeight="34.0" prefWidth="316.0" style="-fx-border-style: solid;" AnchorPane.bottomAnchor="279.0" AnchorPane.leftAnchor="152.0" AnchorPane.rightAnchor="156.0" AnchorPane.topAnchor="221.0">
+                  <HBox layoutX="152.0" layoutY="221.0" prefHeight="34.0" prefWidth="316.0" style="-fx-border-style: solid; -fx-border-radius: 0.5;" AnchorPane.bottomAnchor="279.0" AnchorPane.leftAnchor="152.0" AnchorPane.rightAnchor="156.0" AnchorPane.topAnchor="221.0">
                      <children>
                         <VBox prefHeight="34.0" prefWidth="158.0">
                            <children>
@@ -107,7 +105,7 @@
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="city" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="158.0" textAlignment="CENTER" />
+                              <Label fx:id="city" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="158.0" textAlignment="CENTER" wrapText="true" />
                            </children>
                            <effect>
                               <Lighting>
@@ -151,32 +149,51 @@
                            <HBox.margin>
                               <Insets left="3.0" />
                            </HBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
                         </Label>
                         <Separator orientation="VERTICAL" prefHeight="200.0" />
                         <VBox prefHeight="63.0">
                            <children>
-                              <Label alignment="CENTER" prefHeight="22.0" prefWidth="126.0" text="%pressure" />
+                              <Label alignment="CENTER" prefHeight="22.0" prefWidth="126.0" text="%pressure">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
                               <Label fx:id="vboxInstancePressure" alignment="CENTER" contentDisplay="CENTER" prefHeight="41.0" prefWidth="125.0" />
                            </children>
                         </VBox>
                         <Separator orientation="VERTICAL" prefHeight="200.0" />
                         <VBox prefHeight="63.0">
                            <children>
-                              <Label alignment="CENTER" prefHeight="22.0" prefWidth="126.0" text="%humidity" />
+                              <Label alignment="CENTER" prefHeight="22.0" prefWidth="126.0" text="%humidity">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
                               <Label fx:id="vboxInstanceHumidity" alignment="CENTER" contentDisplay="CENTER" prefHeight="41.0" prefWidth="125.0" />
                            </children>
                         </VBox>
                         <Separator orientation="VERTICAL" prefHeight="200.0" />
                         <VBox prefHeight="63.0">
                            <children>
-                              <Label alignment="CENTER" prefHeight="22.0" prefWidth="126.0" text="%wind.speed" />
+                              <Label alignment="CENTER" prefHeight="22.0" prefWidth="126.0" text="%wind.speed">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
                               <Label fx:id="vboxInstanceWindSpeed" alignment="CENTER" contentDisplay="CENTER" prefHeight="41.0" prefWidth="125.0" />
                            </children>
                         </VBox>
                         <Separator orientation="VERTICAL" prefHeight="200.0" />
                         <VBox prefHeight="63.0">
                            <children>
-                              <Label alignment="CENTER" prefHeight="22.0" prefWidth="126.0" text="%wind.deg" />
+                              <Label alignment="CENTER" prefHeight="22.0" prefWidth="126.0" text="%wind.deg">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
                               <Label fx:id="vboxInstanceWindMax" alignment="CENTER" contentDisplay="CENTER" prefHeight="41.0" prefWidth="125.0" />
                            </children>
                         </VBox>
@@ -187,6 +204,10 @@
                                     </AnchorPane>
          </content>
       </ScrollPane>
-      <ScrollPane />
+      <ScrollPane>
+         <content>
+            <AnchorPane prefHeight="534.0" prefWidth="624.0" />
+         </content>
+      </ScrollPane>
    </items>
 </SplitPane>

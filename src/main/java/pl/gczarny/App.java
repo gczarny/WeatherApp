@@ -1,19 +1,13 @@
 package pl.gczarny;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import pl.gczarny.utils.FxmlUtils;
 
-import java.net.URL;
+
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 public class App extends Application
 {
