@@ -17,6 +17,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import pl.gczarny.model.*;
@@ -31,52 +33,60 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public class MainWindowController{
+    @FXML
+    private AnchorPane leftAnchorPane, rightAnchorPane;
+    @FXML
+    private TextField leftCityTextField, rightCityTextField;
+    @FXML
+    private Label statusLeftLabel, statusRightLabel;
+    @FXML
+    private Label leftCity, rightCity;
+    @FXML
+    private Label leftPopulation, rightPopulation;
+    @FXML
+    private Label leftVBoxInstanceData, rightVBoxInstanceData;
+    @FXML
+    private Label leftVBoxInstanceHumidity, rightVBoxInstanceHumidity;
+    @FXML
+    private Label leftVBoxInstancePressure, rightVBoxInstancePressure;
+    @FXML
+    private Label leftVBoxInstanceWindMax, rightVBoxInstanceWindMax;
+    @FXML
+    private Label leftVBoxInstanceWindSpeed, rightVBoxInstanceWindSpeed;
+    @FXML
+    private HBox leftHBoxForecast, rightHBoxForecast;
+    private String leftLocation, rightLocation;
 
-    @FXML
-    private AnchorPane leftAnchrPane;
+    public MainWindowController() {
+    }
 
-    @FXML
-    private SplitPane splitPane;
-    @FXML
-    private ScrollPane leftScrollPane;
-    @FXML
-    private TextField leftCityTextField;
-    @FXML
-    private Label statusLeftLabel;
-    @FXML
-    private Label city;
-    @FXML
-    private Label population;
-    @FXML
-    private Label vboxInstanceData;
-
-    @FXML
-    private Label vboxInstanceHumidity;
-
-    @FXML
-    private Label vboxInstancePressure;
-
-    @FXML
-    private Label vboxInstanceWindMax;
-
-    @FXML
-    private Label vboxInstanceWindSpeed;
-    @FXML
-    private HBox HBoxForecast;
-    private String location;
     @FXML
     public void ackLeftLocationButton(){
-        if(leftCityTextField.getText().equals(location)){
+        if(checkLabelEmptyOrEqualToTextField(leftCityTextField, leftLocation)){
             return;
         }
-        location = leftCityTextField.getText();
-
-        if(location.isEmpty() || location.equals("")){
-            DialogUtils.warningDialog(FxmlUtils.getResourceBundle().getString("warning.left.empty.field"));
-            return;
-        }
+        leftLocation = leftCityTextField.getText();
         statusLeftLabel.setText(FxmlUtils.getResourceBundle().getString("data.status.request"));
-        fetchForecastData(location, true);
+        fetchForecastLeftData(leftLocation, true);
+    }
+    @FXML
+    void ackRightLocationButton() {
+        if(checkLabelEmptyOrEqualToTextField(rightCityTextField, rightLocation)){
+            return;
+        }
+        rightLocation = rightCityTextField.getText();
+        statusRightLabel.setText(FxmlUtils.getResourceBundle().getString("data.status.request"));
+        fetchForecastRightData(rightLocation, true);
+    }
+    private boolean checkLabelEmptyOrEqualToTextField(TextField textField, String location){
+        if(textField.getText().equals(location)){
+            return true;
+        }
+        if(location.isEmpty() || location.equals("")){
+            DialogUtils.warningDialog(FxmlUtils.getResourceBundle().getString("warning.empty.field"));
+            return true;
+        }
+        return false;
     }
     @FXML
     void closeApplication() {
@@ -86,12 +96,20 @@ public class MainWindowController{
         }
     }
     @FXML
-    void refreshButton() {
-        if(leftCityTextField.getText().isEmpty() || location.isEmpty()){
+    void refreshLeftButton() {
+        if(leftCityTextField.getText().isEmpty() || leftLocation.isEmpty()){
             return;
         }
-        leftCityTextField.setText(location);
-        fetchForecastData(location, true);
+        leftCityTextField.setText(leftLocation);
+        fetchForecastLeftData(leftLocation, true);
+    }
+    @FXML
+    void refreshRightButton() {
+        if(rightCityTextField.getText().isEmpty() || rightLocation.isEmpty()){
+            return;
+        }
+        rightCityTextField.setText(rightLocation);
+        fetchForecastRightData(rightLocation, true);
     }
 
     @FXML
@@ -113,32 +131,36 @@ public class MainWindowController{
     public void initialize() {
         try {
             ResourceBundle bundle = ResourceBundle.getBundle("bundles/config");
-            location = bundle.getString("location");
-            leftCityTextField.setText(location);
-            city.setText(location);
-            fetchForecastData(location, false);
+            leftLocation = bundle.getString("leftLocation");
+            rightLocation = bundle.getString("rightLocation");
+            leftCityTextField.setText(leftLocation);
+            leftCity.setText(leftLocation);
+            rightCityTextField.setText(rightLocation);
+            rightCity.setText(rightLocation);
+            fetchForecastRightData(rightLocation, false);
+            fetchForecastLeftData(leftLocation, false);
         } catch (MissingResourceException e) {
             DialogUtils.errorDialog(e.getMessage());
         }
         leftCityTextFieldEnterKeyListener();
     }
 
-    private void fetchForecastData(String location, boolean onButtonDemand){
+    private void fetchForecastLeftData(String location, boolean onButtonDemand){
         WeatherDataFetchTask fetchTask = new WeatherDataFetchTask(location);
         fetchTask.setOnSucceeded(event -> {
             List<WeatherData> weatherDataList = fetchTask.getValue();
-            displayForecastInHBox(weatherDataList);
-            setInnerShadowForFirstVBox(weatherDataList.get(0));
-            population.setText(Integer.toString(weatherDataList.get(0).getPopulation()));
-            WeatherBackgroundManager.changeBackground(weatherDataList.get(0).getId(), leftAnchrPane, LocalTime.now());
+            leftHBoxForecast = displayForecastInHBox(weatherDataList, leftHBoxForecast, true);
+            setInnerShadowForFirstVBox(weatherDataList.get(0), leftHBoxForecast, true);
+            leftPopulation.setText(Integer.toString(weatherDataList.get(0).getPopulation()));
+            WeatherBackgroundManager.changeBackground(weatherDataList.get(0).getId(), leftAnchorPane, LocalTime.now());
             if(weatherDataList.get(0).getPopulation() >= 1000000){
-                population.setText(">" + weatherDataList.get(0).getPopulation());
+                leftPopulation.setText(">" + weatherDataList.get(0).getPopulation());
             }
             if(onButtonDemand){
                 statusLeftLabel.setText(FxmlUtils.getResourceBundle().getString("data.status.done"));
                 resetStatusLabelAfterDelay(statusLeftLabel);
-                city.setText(weatherDataList.get(0).getLocation());
-                FxmlUtils.setConfigResourceProperty("location", weatherDataList.get(0).getLocation());
+                leftCity.setText(weatherDataList.get(0).getLocation());
+                FxmlUtils.setConfigResourceProperty("leftLocation", weatherDataList.get(0).getLocation());
             }
         });
         fetchTask.setOnFailed(event -> {
@@ -153,8 +175,38 @@ public class MainWindowController{
         });
         new Thread(fetchTask).start();
     }
+    private void fetchForecastRightData(String location, boolean onButtonDemand){
+        WeatherDataFetchTask fetchTask = new WeatherDataFetchTask(location);
+        fetchTask.setOnSucceeded(event -> {
+            List<WeatherData> weatherDataList = fetchTask.getValue();
+            rightHBoxForecast = displayForecastInHBox(weatherDataList, rightHBoxForecast, false);
+            setInnerShadowForFirstVBox(weatherDataList.get(0), rightHBoxForecast, false);
+            rightPopulation.setText(Integer.toString(weatherDataList.get(0).getPopulation()));
+            WeatherBackgroundManager.changeBackground(weatherDataList.get(0).getId(), rightAnchorPane, LocalTime.now());
+            if(weatherDataList.get(0).getPopulation() >= 1000000){
+                rightPopulation.setText(">" + weatherDataList.get(0).getPopulation());
+            }
+            if(onButtonDemand){
+                statusRightLabel.setText(FxmlUtils.getResourceBundle().getString("data.status.done"));
+                resetStatusLabelAfterDelay(statusRightLabel);
+                rightCity.setText(weatherDataList.get(0).getLocation());
+                FxmlUtils.setConfigResourceProperty("rightLocation", weatherDataList.get(0).getLocation());
+            }
+        });
+        fetchTask.setOnFailed(event -> {
+            Throwable exception = fetchTask.getException();
+            if(exception instanceof WeatherDataFetchException){
+                DialogUtils.errorDialog(exception.getMessage());
+                statusRightLabel.setText("");
+            }else {
+                exception.printStackTrace();
+                DialogUtils.errorDialog(FxmlUtils.getResourceBundle().getString("error.not.found.all"));
+            }
+        });
+        new Thread(fetchTask).start();
+    }
 
-    private ImageView updateLeftImageViews(String id){
+    private ImageView updateImageViews(String id){
         ImageView weatherIcon = new ImageView();
         Image icon = new Image(WeatherIconManager.getIconPath(id));
         weatherIcon.setImage(icon);
@@ -162,63 +214,78 @@ public class MainWindowController{
         weatherIcon.setFitWidth(Region.USE_COMPUTED_SIZE);
         return weatherIcon;
     }
-
-    private void displayForecastInHBox(List<WeatherData> forecastList) {
-        HBoxForecast.getChildren().clear();
-        //HBoxForecast.setSpacing(30);
-        BackgroundFill backgroundFill = new BackgroundFill(new Color(0, 0, 0, 0.2), CornerRadii.EMPTY, Insets.EMPTY);
-        Background background = new Background(backgroundFill);
-        HBoxForecast.setBackground(background);
-        for (WeatherData forecastData : forecastList) {
-            VBox vBox = getVBox(forecastList);
-            Label temperatureLabel = new Label(String.format("%.1f°C", forecastData.getTemperature()));
-            temperatureLabel.setPrefSize(150, 150);
-            Label dateLabel = new Label(forecastData.getDateTime().format(DateTimeFormatter.ISO_DATE));
-            dateLabel.setTextAlignment(TextAlignment.JUSTIFY);
-            dateLabel.setAlignment(Pos.CENTER);
-            dateLabel.setWrapText(true);
-            vBox.getChildren().addAll(temperatureLabel, dateLabel, new Separator(), updateLeftImageViews(forecastData.getIcon()));
-            vBox.getProperties().put("weatherData", forecastData);
-            makeVBoxClickable(vBox, forecastData);
-            vBox.setCursor(Cursor.HAND);
-            HBoxForecast.getChildren().addAll(vBox, addVerticalSeparator());
-            HBox.setHgrow(vBox, Priority.ALWAYS);
-        }
-    }
-
-    private void makeVBoxClickable(VBox vBox, WeatherData weatherData) {
+    private void makeVBoxClickable(VBox vBox, WeatherData weatherData, HBox hbox, boolean leftSide) {
         vBox.setOnMouseClicked(event -> {
-            setInnerShadowEffectOnVBoxAndSetData(vBox, weatherData);
-            for (Node node : HBoxForecast.getChildren()) {
+            setInnerShadowEffectOnVBoxAndSetData(vBox, weatherData, leftSide);
+            for (Node node : hbox.getChildren()) {
                 if (node instanceof VBox && node != vBox) {
                     ((VBox) node).setEffect(null);
                 }
             }
         });
     }
+    private HBox displayForecastInHBox(List<WeatherData> forecastList, HBox hbox, boolean leftSide) {
+        hbox.getChildren().clear();
+        //HBoxForecast.setSpacing(30);
+        BackgroundFill backgroundFill = new BackgroundFill(new Color(0, 0, 0, 0.2), CornerRadii.EMPTY, Insets.EMPTY);
+        Background background = new Background(backgroundFill);
+        hbox.setBackground(background);
+        for (WeatherData forecastData : forecastList) {
+            VBox vBox = getVBox(forecastList, leftSide);
+            Label temperatureLabel = new Label(String.format("%.1f°C", forecastData.getTemperature()));
+            temperatureLabel.setPrefSize(150, 150);
+            temperatureLabel.setTextAlignment(TextAlignment.JUSTIFY);
+            temperatureLabel.setAlignment(Pos.CENTER);
+            temperatureLabel.setFont(Font.font("Verdana", FontWeight.BOLD,16));
+            Label dateLabel = new Label(forecastData.getDateTime().format(DateTimeFormatter.ISO_DATE));
+            dateLabel.setTextAlignment(TextAlignment.JUSTIFY);
+            dateLabel.setAlignment(Pos.CENTER);
+            dateLabel.setFont(Font.font("Verdana", FontWeight.BOLD,12));
+            dateLabel.setWrapText(true);
+            vBox.getChildren().addAll(temperatureLabel, dateLabel, new Separator(), updateImageViews(forecastData.getIcon()));
+            vBox.getProperties().put("weatherData", forecastData);
+            makeVBoxClickable(vBox, forecastData, hbox, leftSide);
+            vBox.setCursor(Cursor.HAND);
+            hbox.getChildren().addAll(vBox, addVerticalSeparator());
+            HBox.setHgrow(vBox, Priority.ALWAYS);
+        }
+        return hbox;
+    }
 
-    private void setInnerShadowForFirstVBox(WeatherData weatherData) {
-        if (HBoxForecast.getChildren().size() > 0) {
-            Node firstChild = HBoxForecast.getChildren().get(0);
+    private void setInnerShadowForFirstVBox(WeatherData weatherData, HBox hbox, boolean leftSide) {
+        if (hbox.getChildren().size() > 0) {
+            Node firstChild = hbox.getChildren().get(0);
             if (firstChild instanceof VBox) {
                 VBox firstVBox = (VBox) firstChild;
-                setInnerShadowEffectOnVBoxAndSetData(firstVBox, weatherData);
+                setInnerShadowEffectOnVBoxAndSetData(firstVBox, weatherData, leftSide);
             }
         }
     }
 
-    private void setInnerShadowEffectOnVBoxAndSetData(VBox vbox, WeatherData weatherData){
+    private void setInnerShadowEffectOnVBoxAndSetData(VBox vbox, WeatherData weatherData, boolean leftSide){
         vbox.setEffect(new InnerShadow(10, Color.RED));
-        setDataInHboxDataTakemFromVBoxClicked(weatherData);
+        if(leftSide){
+            setLeftDataInHboxDataTakenFromVBoxClicked(weatherData);
+        }else{
+            setRightDataInHboxDataTakenFromVBoxClicked(weatherData);
+        }
     }
 
-    private void setDataInHboxDataTakemFromVBoxClicked(WeatherData weatherData){
-        vboxInstanceData.setText(weatherData.getDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE));
-        vboxInstanceData.setWrapText(true);
-        vboxInstancePressure.setText(String.valueOf(weatherData.getPressure()) + " hPa");
-        vboxInstanceHumidity.setText(String.valueOf(weatherData.getHumidity()) + "%");
-        vboxInstanceWindSpeed.setText(String.valueOf(weatherData.getWindSpeed()) + " m/s");
-        vboxInstanceWindMax.setText(String.valueOf(weatherData.getWindDeg()) + "°");
+    private void setLeftDataInHboxDataTakenFromVBoxClicked(WeatherData weatherData){
+        leftVBoxInstanceData.setText(weatherData.getDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE));
+        leftVBoxInstanceData.setWrapText(true);
+        leftVBoxInstancePressure.setText(String.valueOf(weatherData.getPressure()) + " hPa");
+        leftVBoxInstanceHumidity.setText(String.valueOf(weatherData.getHumidity()) + "%");
+        leftVBoxInstanceWindSpeed.setText(String.valueOf(weatherData.getWindSpeed()) + " m/s");
+        leftVBoxInstanceWindMax.setText(String.valueOf(weatherData.getWindDeg()) + "°");
+    }
+    private void setRightDataInHboxDataTakenFromVBoxClicked(WeatherData weatherData){
+        rightVBoxInstanceData.setText(weatherData.getDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE));
+        rightVBoxInstanceData.setWrapText(true);
+        rightVBoxInstancePressure.setText(String.valueOf(weatherData.getPressure()) + " hPa");
+        rightVBoxInstanceHumidity.setText(String.valueOf(weatherData.getHumidity()) + "%");
+        rightVBoxInstanceWindSpeed.setText(String.valueOf(weatherData.getWindSpeed()) + " m/s");
+        rightVBoxInstanceWindMax.setText(String.valueOf(weatherData.getWindDeg()) + "°");
     }
 
     private void leftCityTextFieldEnterKeyListener() {
@@ -235,9 +302,13 @@ public class MainWindowController{
         return separator;
     }
 
-    private VBox getVBox(List<WeatherData> forecastList){
+    private VBox getVBox(List<WeatherData> forecastList, boolean leftSide){
         VBox vBox = new VBox();
-        vBox.setPrefWidth(HBoxForecast.getWidth() / forecastList.size());
+        if(leftSide){
+            vBox.setPrefWidth(leftHBoxForecast.getWidth() / forecastList.size());
+        } else{
+            vBox.setPrefWidth(rightHBoxForecast.getWidth() / forecastList.size());
+        }
         vBox.setSpacing(10);
         vBox.setPadding(new Insets(10, 10, 10, 10));
         vBox.setPrefWidth(Region.USE_COMPUTED_SIZE);

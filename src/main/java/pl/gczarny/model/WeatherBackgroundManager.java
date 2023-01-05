@@ -47,12 +47,14 @@ public class WeatherBackgroundManager {
         String timeOfDay = getTimeOfDay(localTime);
         LazyImage backgroundImage = BACKGROUND_IMAGE_BY_WEATHER_DESCRIPTION_BY_TIME_OF_DAY.get(weatherDescription).get(timeOfDay);
         try{
+            System.out.println(backgroundImage + " " + id);
             BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, true);
             BackgroundImage bgImage = new BackgroundImage(backgroundImage.getImageView().getImage(), BackgroundRepeat.NO_REPEAT,
                     BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
             pane.setBackground(new Background(bgImage));
         } catch (NullPointerException e){
-                DialogUtils.errorDialog("Nie mogłem wczytać tła!");
+            e.printStackTrace();
+            DialogUtils.errorDialog(e.getMessage());
         }
     }
 
