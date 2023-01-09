@@ -5,6 +5,7 @@ module WeatherApp {
     requires javafx.web;
     requires com.google.gson;
     requires com.google.common;
+    requires org.json;
 
     opens pl.gczarny to javafx.fxml;
     exports pl.gczarny;

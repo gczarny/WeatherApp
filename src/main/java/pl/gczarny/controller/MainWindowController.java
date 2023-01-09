@@ -57,9 +57,6 @@ public class MainWindowController{
     private HBox leftHBoxForecast, rightHBoxForecast;
     private String leftLocation, rightLocation;
 
-    public MainWindowController() {
-    }
-
     @FXML
     public void ackLeftLocationButton(){
         if(checkLabelEmptyOrEqualToTextField(leftCityTextField, leftLocation)){
@@ -71,6 +68,7 @@ public class MainWindowController{
     }
     @FXML
     void ackRightLocationButton() {
+        System.out.println(rightCityTextField.getText() + " " + rightLocation);
         if(checkLabelEmptyOrEqualToTextField(rightCityTextField, rightLocation)){
             return;
         }
@@ -130,15 +128,16 @@ public class MainWindowController{
     @FXML
     public void initialize() {
         try {
-            ResourceBundle bundle = ResourceBundle.getBundle("bundles/config");
-            leftLocation = bundle.getString("leftLocation");
-            rightLocation = bundle.getString("rightLocation");
+            FxmlUtils.readConfigFile();
+            rightLocation = FxmlUtils.getRightLocation();
+            rightCityTextField.setText(rightLocation);
+            leftLocation = FxmlUtils.getLeftLocation();
             leftCityTextField.setText(leftLocation);
             leftCity.setText(leftLocation);
-            rightCityTextField.setText(rightLocation);
+
             rightCity.setText(rightLocation);
-            fetchForecastRightData(rightLocation, false);
             fetchForecastLeftData(leftLocation, false);
+            fetchForecastRightData(rightLocation, false);
         } catch (MissingResourceException e) {
             DialogUtils.errorDialog(e.getMessage());
         }
@@ -160,7 +159,7 @@ public class MainWindowController{
                 statusLeftLabel.setText(FxmlUtils.getResourceBundle().getString("data.status.done"));
                 resetStatusLabelAfterDelay(statusLeftLabel);
                 leftCity.setText(weatherDataList.get(0).getLocation());
-                FxmlUtils.setConfigResourceProperty("leftLocation", weatherDataList.get(0).getLocation());
+                FxmlUtils.setLeftLocation(weatherDataList.get(0).getLocation());
             }
         });
         fetchTask.setOnFailed(event -> {
@@ -190,7 +189,8 @@ public class MainWindowController{
                 statusRightLabel.setText(FxmlUtils.getResourceBundle().getString("data.status.done"));
                 resetStatusLabelAfterDelay(statusRightLabel);
                 rightCity.setText(weatherDataList.get(0).getLocation());
-                FxmlUtils.setConfigResourceProperty("rightLocation", weatherDataList.get(0).getLocation());
+                FxmlUtils.setRightLocation(weatherDataList.get(0).getLocation());
+                FxmlUtils.writeConfigFile();
             }
         });
         fetchTask.setOnFailed(event -> {
