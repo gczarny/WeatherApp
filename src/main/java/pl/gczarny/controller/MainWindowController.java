@@ -68,7 +68,6 @@ public class MainWindowController{
     }
     @FXML
     void ackRightLocationButton() {
-        System.out.println(rightCityTextField.getText() + " " + rightLocation);
         if(checkLabelEmptyOrEqualToTextField(rightCityTextField, rightLocation)){
             return;
         }
