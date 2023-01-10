@@ -113,8 +113,8 @@ public class FxmlUtils {
             JSONObject config = new JSONObject(new JSONTokener(reader));
 
             // przypisz wartości do pól leftLocation i rightLocation
-            leftLocation = config.getString("leftLocation");
-            rightLocation = config.getString("rightLocation");
+            leftLocation = config.getString(LEFT_LOCATION_PROPERTY);
+            rightLocation = config.getString(RIGHT_LOCATION_PROPERTY);
         } catch (IOException | JSONException e) {
             DialogUtils.errorDialog(e.getMessage());
         }
@@ -124,8 +124,8 @@ public class FxmlUtils {
         try {
             // utwórz obiekt JSON zawierający wartości pól leftLocation i rightLocation
             JSONObject config = new JSONObject();
-            config.put("leftLocation", leftLocation);
-            config.put("rightLocation", rightLocation);
+            config.put(LEFT_LOCATION_PROPERTY, leftLocation);
+            config.put(RIGHT_LOCATION_PROPERTY, rightLocation);
 
             // zapisz obiekt JSON do pliku config.json
             FileWriter writer = new FileWriter(CONFIG_FILE_NAME);

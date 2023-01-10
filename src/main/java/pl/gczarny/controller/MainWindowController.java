@@ -21,6 +21,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
+import pl.gczarny.controller.Tasks.WeatherDataFetchTask;
 import pl.gczarny.model.*;
 import pl.gczarny.utils.DialogUtils;
 import pl.gczarny.utils.FxmlUtils;
@@ -30,7 +31,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
 public class MainWindowController{
     @FXML
@@ -127,21 +127,21 @@ public class MainWindowController{
 
     @FXML
     public void initialize() {
+        leftCityTextFieldEnterKeyListener(leftCityTextField, this::ackLeftLocationButton);
+        leftCityTextFieldEnterKeyListener(rightCityTextField, this::ackRightLocationButton);
         try {
             FxmlUtils.readConfigFile();
             rightLocation = FxmlUtils.getRightLocation();
             rightCityTextField.setText(rightLocation);
+            rightCity.setText(rightLocation);
             leftLocation = FxmlUtils.getLeftLocation();
             leftCityTextField.setText(leftLocation);
             leftCity.setText(leftLocation);
-
-            rightCity.setText(rightLocation);
             fetchForecastLeftData(leftLocation, false);
             fetchForecastRightData(rightLocation, false);
         } catch (MissingResourceException e) {
             DialogUtils.errorDialog(e.getMessage());
         }
-        leftCityTextFieldEnterKeyListener();
     }
 
     private void fetchForecastLeftData(String location, boolean onButtonDemand){
@@ -288,10 +288,11 @@ public class MainWindowController{
         rightVBoxInstanceWindMax.setText(String.valueOf(weatherData.getWindDeg()) + "°");
     }
 
-    private void leftCityTextFieldEnterKeyListener() {
-        leftCityTextField.setOnKeyPressed(event -> {
+    private void leftCityTextFieldEnterKeyListener(TextField textField, Runnable action) {
+        textField.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                ackLeftLocationButton();
+                //ackLeftLocationButton();
+                action.run();
             }
         });
     }

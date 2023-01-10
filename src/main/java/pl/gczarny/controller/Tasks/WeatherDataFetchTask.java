@@ -1,7 +1,8 @@
-package pl.gczarny.model;
+package pl.gczarny.controller.Tasks;
 
 import javafx.concurrent.Task;
-import pl.gczarny.utils.exceptions.WeatherDataFetchException;
+import pl.gczarny.model.WeatherData;
+import pl.gczarny.model.WeatherDataFetcher;
 
 import java.util.List;
 

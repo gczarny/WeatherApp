@@ -5,7 +5,6 @@ import javafx.scene.image.ImageView;
 
 public class LazyImage {
     private String path;
-    private Image image;
     private ImageView imageView;
 
     public LazyImage(String path) {

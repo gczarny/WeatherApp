@@ -13,15 +13,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.effect.InnerShadow?>
-<?import javafx.scene.effect.Light.Distant?>
-<?import javafx.scene.effect.Lighting?>
-<?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
 <SplitPane dividerPositions="0.5" prefHeight="551.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.gczarny.controller.MainWindowController">
@@ -107,20 +103,6 @@
                         </Label>
                         <Label fx:id="leftCity" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="158.0" textAlignment="CENTER" />
                      </children>
-                     <effect>
-                        <Lighting>
-                           <bumpInput>
-                              <Shadow />
-                           </bumpInput>
-                           <light>
-                              <Light.Distant>
-                                 <color>
-                                    <Color red="0.43421053886413574" green="0.16885964572429657" blue="0.16885964572429657" />
-                                 </color>
-                              </Light.Distant>
-                           </light>
-                        </Lighting>
-                     </effect>
                   </VBox>
                   <Separator orientation="VERTICAL" prefHeight="200.0" />
                   <VBox prefHeight="34.0" prefWidth="158.0">
@@ -201,10 +183,10 @@
             <Point3D />
          </rotationAxis>
       
-                                    </AnchorPane>
+                                          </AnchorPane>
       <AnchorPane fx:id="rightAnchorPane">
          <children>
-            <VBox alignment="TOP_CENTER" layoutY="26.0" prefHeight="188.0" prefWidth="636.0">
+            <VBox alignment="TOP_CENTER" layoutY="26.0" prefHeight="188.0" prefWidth="636.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="33.0" style="-fx-line-spacing: 4;" text="%your.destination" textAlignment="CENTER" underline="true">
                      <font>
@@ -270,9 +252,9 @@
                   </VBox>
                </children>
             </HBox>
-            <HBox fx:id="rightHBoxForecast" layoutY="264.0" maxWidth="-Infinity" prefHeight="174.0" prefWidth="549.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-            <Separator layoutX="14.0" layoutY="476.0" prefHeight="2.0" prefWidth="621.0" />
-            <HBox layoutY="477.0" prefHeight="63.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="25.0">
+            <HBox fx:id="rightHBoxForecast" layoutY="264.0" maxWidth="-Infinity" prefHeight="174.0" prefWidth="549.0" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Separator layoutX="16.0" layoutY="447.0" prefHeight="0.0" prefWidth="621.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="18.0" />
+            <HBox layoutY="481.0" prefHeight="63.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="25.0">
                <children>
                   <Label fx:id="rightVBoxInstanceData" alignment="CENTER" contentDisplay="CENTER" prefHeight="63.0" prefWidth="92.0" text="%date" textAlignment="CENTER">
                      <padding>

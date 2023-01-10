@@ -1,10 +1,7 @@
 package pl.gczarny.model;
 
 import com.google.common.collect.Range;
-import javafx.animation.*;
-import javafx.animation.TranslateTransition;
 import javafx.scene.layout.*;
-import javafx.util.Duration;
 import pl.gczarny.utils.DialogUtils;
 
 import java.time.LocalTime;
@@ -47,7 +44,6 @@ public class WeatherBackgroundManager {
         String timeOfDay = getTimeOfDay(localTime);
         LazyImage backgroundImage = BACKGROUND_IMAGE_BY_WEATHER_DESCRIPTION_BY_TIME_OF_DAY.get(weatherDescription).get(timeOfDay);
         try{
-            System.out.println(backgroundImage + " " + id);
             BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, true);
             BackgroundImage bgImage = new BackgroundImage(backgroundImage.getImageView().getImage(), BackgroundRepeat.NO_REPEAT,
                     BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
