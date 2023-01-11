@@ -17,5 +17,4 @@ public class WeatherDataFetchTask extends Task<List<WeatherData>> {
     protected List<WeatherData> call() throws Exception {
         return WeatherDataFetcher.fetchForecastData(location);
     }
-
 }

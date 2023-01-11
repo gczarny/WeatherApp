@@ -3,7 +3,6 @@ package pl.gczarny.model;
 import java.time.LocalDateTime;
 
 public class WeatherData {
-
     private double temperature;
     private double pressure;
     private double windSpeed, windDeg;
@@ -13,7 +12,6 @@ public class WeatherData {
     private String icon;
     private String location;
     LocalDateTime localDateTime;
-
     public WeatherData(double temperature, double pressure, double windSpeed,
                        double windDeg, double humidity, String icon, String location,
                        LocalDateTime localDateTime, int population, int id) {
@@ -28,31 +26,24 @@ public class WeatherData {
         this.population = population;
         this.id = id;
     }
-
     public double getTemperature() {
         return temperature;
     }
-
     public String getIcon() {
         return icon;
     }
-
     public LocalDateTime getDateTime() {
         return localDateTime;
     }
-
     public double getPressure() {
         return pressure;
     }
-
     public double getWindSpeed() {
         return windSpeed;
     }
-
     public double getWindDeg() {
         return windDeg;
     }
-
     public double getHumidity() {
         return humidity;
     }
@@ -62,7 +53,6 @@ public class WeatherData {
     public String getLocation() {
         return location;
     }
-
     public int getId() {
         return id;
     }

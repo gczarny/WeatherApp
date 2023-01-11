@@ -66,7 +66,3 @@ public class WeatherBackgroundManager {
         }
     }
 }
-/* -fx-background-image url('/images/left_bg.png')
--fx-background-size cover
--fx-background-position center
-*/

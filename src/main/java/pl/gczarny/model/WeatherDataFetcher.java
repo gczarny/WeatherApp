@@ -71,8 +71,7 @@ public class WeatherDataFetcher {
         return getDoubleWeatherDataFromJsonObject(json, "wind", "deg");
     }
     public static int getPopulation(JsonObject json){
-        int population = json.get("population").getAsInt();
-        return population;
+        return json.get("population").getAsInt();
     }
     public static String getLocation(JsonObject json){
         String cityName = json.get("name").getAsString();
@@ -121,6 +120,4 @@ public class WeatherDataFetcher {
                 getWeatherIcon(forecast), getLocation(jsonCityObject), dateTime,
                 getPopulation(jsonCityObject), getWeatherId(forecast));
     }
-
-
 }
