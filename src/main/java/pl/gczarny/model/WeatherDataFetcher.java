@@ -1,5 +1,6 @@
 package pl.gczarny.model;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import pl.gczarny.Config;
 
@@ -18,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import pl.gczarny.utils.FxmlUtils;
 import pl.gczarny.utils.exceptions.WeatherDataFetchException;
 
@@ -31,26 +31,16 @@ public class WeatherDataFetcher {
         List<WeatherData> forecastList = new ArrayList<WeatherData>();
         for(int i = 0; i < jsonForecastArray.size(); i++){
             JsonObject forecast = jsonForecastArray.get(i).getAsJsonObject();
-            long timestamp = forecast.get("dt").getAsLong();
-            String timestamp_txt = forecast.get("dt_txt").getAsString();
-            LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(timestamp), ZoneId.systemDefault());
-            if (dateTime.toLocalDate().isEqual(LocalDate.now()) && forecastList.size() == 0 ||
-                    (dateTime.toLocalDate().isAfter(LocalDate.now()) && timestamp_txt.endsWith("12:00:00"))) {
-                forecastList.add(new WeatherData(getTemperature(forecast), getPressure(forecast),
-                                                getWindSpeed(forecast), getWindDeg(forecast), getHumidity(forecast),
-                                                getWeatherIcon(forecast), getLocation(jsonCityObject), dateTime,
-                                                getPopulation(jsonCityObject), getWeatherId(forecast)));
+            LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(forecast.get("dt").getAsLong()), ZoneId.systemDefault());
+            if(shouldAddForecastData(forecastList, dateTime, forecast.get("dt_txt").getAsString()))
+            {
+                forecastList.add(getWeatherData(forecast, jsonCityObject, dateTime));
             }
             if(forecastList.size() == 5){
                 break;
             }
         }
         return forecastList;
-    }
-
-    public static double getTemperature(JsonObject json){
-        JsonObject main = json.getAsJsonObject("main");
-        return main.get("temp").getAsDouble();
     }
 
     public static String getWeatherIcon(JsonObject json){
@@ -64,25 +54,21 @@ public class WeatherDataFetcher {
         return id.get("id").getAsInt();
     }
 
+    public static double getTemperature(JsonObject json){
+        return getDoubleWeatherDataFromJsonObject(json, "main", "temp");
+    }
+
     public static double getHumidity(JsonObject json){
-        JsonObject main = json.getAsJsonObject("main");
-        double humidity = main.get("humidity").getAsDouble();
-        return humidity;
+        return getDoubleWeatherDataFromJsonObject(json, "main", "humidity");
     }
     public static double getPressure(JsonObject json){
-        JsonObject main = json.getAsJsonObject("main");
-        double pressure = main.get("pressure").getAsDouble();
-        return pressure;
+        return getDoubleWeatherDataFromJsonObject(json, "main", "pressure");
     }
     public static double getWindSpeed(JsonObject json){
-        JsonObject main = json.getAsJsonObject("wind");
-        double speed = main.get("speed").getAsDouble();
-        return speed;
+        return getDoubleWeatherDataFromJsonObject(json, "wind", "speed");
     }
     public static double getWindDeg(JsonObject json){
-        JsonObject main = json.getAsJsonObject("wind");
-        double deg = main.get("deg").getAsDouble();
-        return deg;
+        return getDoubleWeatherDataFromJsonObject(json, "wind", "deg");
     }
     public static int getPopulation(JsonObject json){
         int population = json.get("population").getAsInt();
@@ -99,21 +85,42 @@ public class WeatherDataFetcher {
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             con.connect();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuilder content = new StringBuilder();
-            while((inputLine = reader.readLine()) != null){
-                content.append(inputLine);
+            if (con.getResponseCode() != 200) {
+                throw new WeatherDataFetchException(FxmlUtils.getResourceBundle().getString("error.http.response") + con.getResponseCode());
             }
-            reader.close();
+            BufferedReader br = new BufferedReader(new InputStreamReader((con.getInputStream())));
+            String jsonData = "";
+            String output;
+            while ((output = br.readLine()) != null) {
+                jsonData += output;
+            }
             con.disconnect();
-            JsonObject json = new JsonParser().parse(content.toString()).getAsJsonObject();
-            return json;
+            return new Gson().fromJson(jsonData, JsonObject.class);
         }catch (FileNotFoundException e) {
             throw new WeatherDataFetchException(FxmlUtils.getResourceBundle().getString("error.not.found"));
+
 
         } catch (Exception e) {
             throw new WeatherDataFetchException(FxmlUtils.getResourceBundle().getString("error.not.found.all"));
         }
     }
+    private static double getDoubleWeatherDataFromJsonObject(JsonObject jsonObject, String memberName, String data){
+        JsonObject json = jsonObject.getAsJsonObject(memberName);
+        double returnData = json.get(data).getAsDouble();
+        return returnData;
+    }
+
+    private static boolean shouldAddForecastData(List<WeatherData> forecastList, LocalDateTime dateTime, String timestmp){
+        return dateTime.toLocalDate().isEqual(LocalDate.now()) && forecastList.size() == 0 ||
+                (dateTime.toLocalDate().isAfter(LocalDate.now()) && timestmp.endsWith("12:00:00"));
+    }
+
+    private static WeatherData getWeatherData(JsonObject forecast, JsonObject jsonCityObject, LocalDateTime dateTime){
+        return new WeatherData(getTemperature(forecast), getPressure(forecast),
+                getWindSpeed(forecast), getWindDeg(forecast), getHumidity(forecast),
+                getWeatherIcon(forecast), getLocation(jsonCityObject), dateTime,
+                getPopulation(jsonCityObject), getWeatherId(forecast));
+    }
+
+
 }

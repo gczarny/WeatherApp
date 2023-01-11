@@ -56,15 +56,15 @@ public class MainWindowController{
     @FXML
     private HBox leftHBoxForecast, rightHBoxForecast;
     private String leftLocation, rightLocation;
-
     @FXML
     public void ackLeftLocationButton(){
+        System.out.println(leftCityTextField.getText() + " " + leftLocation);
         if(checkLabelEmptyOrEqualToTextField(leftCityTextField, leftLocation)){
             return;
         }
         leftLocation = leftCityTextField.getText();
         statusLeftLabel.setText(FxmlUtils.getResourceBundle().getString("data.status.request"));
-        fetchForecastLeftData(leftLocation, true);
+        fetchForecast(leftLocation, true, true, leftPopulation, leftAnchorPane, statusLeftLabel, leftCity);
     }
     @FXML
     void ackRightLocationButton() {
@@ -73,17 +73,7 @@ public class MainWindowController{
         }
         rightLocation = rightCityTextField.getText();
         statusRightLabel.setText(FxmlUtils.getResourceBundle().getString("data.status.request"));
-        fetchForecastRightData(rightLocation, true);
-    }
-    private boolean checkLabelEmptyOrEqualToTextField(TextField textField, String location){
-        if(textField.getText().equals(location)){
-            return true;
-        }
-        if(location.isEmpty() || location.equals("")){
-            DialogUtils.warningDialog(FxmlUtils.getResourceBundle().getString("warning.empty.field"));
-            return true;
-        }
-        return false;
+        fetchForecast(rightLocation, true, false, rightPopulation, rightAnchorPane, statusRightLabel,rightCity);
     }
     @FXML
     void closeApplication() {
@@ -98,7 +88,7 @@ public class MainWindowController{
             return;
         }
         leftCityTextField.setText(leftLocation);
-        fetchForecastLeftData(leftLocation, true);
+        fetchForecast(leftLocation, true, true, leftPopulation, leftAnchorPane, statusLeftLabel, leftCity);
     }
     @FXML
     void refreshRightButton() {
@@ -106,8 +96,10 @@ public class MainWindowController{
             return;
         }
         rightCityTextField.setText(rightLocation);
-        fetchForecastRightData(rightLocation, true);
+
+        fetchForecast(rightLocation, true, false, rightPopulation, rightAnchorPane, statusRightLabel,rightCity);
     }
+
 
     @FXML
     void setCaspian() {
@@ -126,8 +118,8 @@ public class MainWindowController{
 
     @FXML
     public void initialize() {
-        leftCityTextFieldEnterKeyListener(leftCityTextField, this::ackLeftLocationButton);
-        leftCityTextFieldEnterKeyListener(rightCityTextField, this::ackRightLocationButton);
+        TextFieldEnterKeyListener(leftCityTextField, this::ackLeftLocationButton);
+        TextFieldEnterKeyListener(rightCityTextField, this::ackRightLocationButton);
         try {
             FxmlUtils.readConfigFile();
             rightLocation = FxmlUtils.getRightLocation();
@@ -136,40 +128,32 @@ public class MainWindowController{
             leftLocation = FxmlUtils.getLeftLocation();
             leftCityTextField.setText(leftLocation);
             leftCity.setText(leftLocation);
-            fetchForecastLeftData(leftLocation, false);
-            fetchForecastRightData(rightLocation, false);
+            //fetchForecastLeftData(leftLocation, false);
+            fetchForecast(leftLocation, false, true, leftPopulation, leftAnchorPane, statusLeftLabel, leftCity);
+            fetchForecast(rightLocation, false, false, rightPopulation, rightAnchorPane, statusRightLabel,rightCity);
+            //fetchForecastRightData(rightLocation, false);
+
         } catch (MissingResourceException e) {
             DialogUtils.errorDialog(e.getMessage());
         }
     }
 
-    private void fetchForecastLeftData(String location, boolean onButtonDemand){
+/*    private void fetchForecastLeftData(String location, boolean onButtonDemand){
         WeatherDataFetchTask fetchTask = new WeatherDataFetchTask(location);
         fetchTask.setOnSucceeded(event -> {
             List<WeatherData> weatherDataList = fetchTask.getValue();
             leftHBoxForecast = displayForecastInHBox(weatherDataList, leftHBoxForecast, true);
-            setInnerShadowForFirstVBox(weatherDataList.get(0), leftHBoxForecast, true);
-            leftPopulation.setText(Integer.toString(weatherDataList.get(0).getPopulation()));
+            setPopulationLabel(leftPopulation, weatherDataList.get(0).getPopulation());
             WeatherBackgroundManager.changeBackground(weatherDataList.get(0).getId(), leftAnchorPane, LocalTime.now());
-            if(weatherDataList.get(0).getPopulation() >= 1000000){
-                leftPopulation.setText(">" + weatherDataList.get(0).getPopulation());
-            }
+
             if(onButtonDemand){
-                statusLeftLabel.setText(FxmlUtils.getResourceBundle().getString("data.status.done"));
-                resetStatusLabelAfterDelay(statusLeftLabel);
-                leftCity.setText(weatherDataList.get(0).getLocation());
+                btnDemandActionOnSucceededEvent(statusLeftLabel, leftCity, weatherDataList.get(0).getLocation());
                 FxmlUtils.setLeftLocation(weatherDataList.get(0).getLocation());
+                FxmlUtils.writeConfigFile();
             }
         });
         fetchTask.setOnFailed(event -> {
-            Throwable exception = fetchTask.getException();
-            if(exception instanceof WeatherDataFetchException){
-                DialogUtils.errorDialog(exception.getMessage());
-                statusLeftLabel.setText("");
-            }else {
-                exception.printStackTrace();
-                DialogUtils.errorDialog(FxmlUtils.getResourceBundle().getString("error.not.found.all"));
-            }
+            setOnFailedEvent(fetchTask, statusLeftLabel);
         });
         new Thread(fetchTask).start();
     }
@@ -177,32 +161,82 @@ public class MainWindowController{
         WeatherDataFetchTask fetchTask = new WeatherDataFetchTask(location);
         fetchTask.setOnSucceeded(event -> {
             List<WeatherData> weatherDataList = fetchTask.getValue();
-            rightHBoxForecast = displayForecastInHBox(weatherDataList, rightHBoxForecast, false);
-            setInnerShadowForFirstVBox(weatherDataList.get(0), rightHBoxForecast, false);
-            rightPopulation.setText(Integer.toString(weatherDataList.get(0).getPopulation()));
+
+            setPopulationLabel(rightPopulation, weatherDataList.get(0).getPopulation());
             WeatherBackgroundManager.changeBackground(weatherDataList.get(0).getId(), rightAnchorPane, LocalTime.now());
-            if(weatherDataList.get(0).getPopulation() >= 1000000){
-                rightPopulation.setText(">" + weatherDataList.get(0).getPopulation());
-            }
             if(onButtonDemand){
-                statusRightLabel.setText(FxmlUtils.getResourceBundle().getString("data.status.done"));
-                resetStatusLabelAfterDelay(statusRightLabel);
-                rightCity.setText(weatherDataList.get(0).getLocation());
+                btnDemandActionOnSucceededEvent(statusRightLabel, rightCity, weatherDataList.get(0).getLocation());
                 FxmlUtils.setRightLocation(weatherDataList.get(0).getLocation());
                 FxmlUtils.writeConfigFile();
             }
         });
         fetchTask.setOnFailed(event -> {
-            Throwable exception = fetchTask.getException();
-            if(exception instanceof WeatherDataFetchException){
-                DialogUtils.errorDialog(exception.getMessage());
-                statusRightLabel.setText("");
-            }else {
-                exception.printStackTrace();
-                DialogUtils.errorDialog(FxmlUtils.getResourceBundle().getString("error.not.found.all"));
-            }
+            setOnFailedEvent(fetchTask, statusRightLabel);
         });
         new Thread(fetchTask).start();
+    }*/
+    private void fetchForecast(String location, boolean onButtonDemand, boolean leftSide, Label population, Pane pane, Label status, Label city){
+        WeatherDataFetchTask fetchTask = new WeatherDataFetchTask(location);
+        fetchTask.setOnSucceeded(event -> {
+            List<WeatherData> weatherDataList = fetchTask.getValue();
+            if(leftSide){
+
+                leftHBoxForecast = displayForecastInHBox(weatherDataList, leftHBoxForecast, leftSide);
+            }else{
+                rightHBoxForecast = displayForecastInHBox(weatherDataList, rightHBoxForecast, leftSide);
+            }
+            setPopulationLabel(population, weatherDataList.get(0).getPopulation());
+            WeatherBackgroundManager.changeBackground(weatherDataList.get(0).getId(), pane, LocalTime.now());
+            if(onButtonDemand){
+                btnDemandActionOnSucceededEvent(status, city, weatherDataList.get(0).getLocation());
+                if(leftSide){
+                    FxmlUtils.setLeftLocation(weatherDataList.get(0).getLocation());
+                }else{
+                    FxmlUtils.setRightLocation(weatherDataList.get(0).getLocation());
+                }
+                FxmlUtils.writeConfigFile();
+            }
+        });
+        fetchTask.setOnFailed(event -> {
+            setOnFailedEvent(fetchTask, status);
+        });
+        new Thread(fetchTask).start();
+    }
+
+    private void setPopulationLabel(Label label, int population){
+        label.setText(Integer.toString(population));
+        if(population >= 1000000){
+            label.setText(">" + population);
+        }
+    }
+    private void btnDemandActionOnSucceededEvent(Label status, Label city, String location){
+        resetStatusLabelAfterDelay(status);
+        city.setText(location);
+        status.setText(FxmlUtils.getResourceBundle().getString("data.status.done"));
+
+    }
+
+    private void setOnFailedEvent(WeatherDataFetchTask task, Label label){
+        Throwable exception = task.getException();
+        if(exception instanceof WeatherDataFetchException){
+            System.out.println("elo");
+            DialogUtils.errorDialog(exception.getMessage());
+            label.setText("");
+        }else {
+            exception.printStackTrace();
+            DialogUtils.errorDialog(FxmlUtils.getResourceBundle().getString("error.not.found.all"));
+        }
+    }
+
+    private boolean checkLabelEmptyOrEqualToTextField(TextField cityTextField, String location){
+        if(cityTextField.getText().isEmpty() || cityTextField.getText().equals("")){
+            DialogUtils.warningDialog(FxmlUtils.getResourceBundle().getString("warning.empty.field"));
+            return true;
+        }
+        if(cityTextField.getText().equals(location)){
+            return true;
+        }
+        return false;
     }
 
     private ImageView updateImageViews(String id){
@@ -225,12 +259,11 @@ public class MainWindowController{
     }
     private HBox displayForecastInHBox(List<WeatherData> forecastList, HBox hbox, boolean leftSide) {
         hbox.getChildren().clear();
-        //HBoxForecast.setSpacing(30);
         BackgroundFill backgroundFill = new BackgroundFill(new Color(0, 0, 0, 0.2), CornerRadii.EMPTY, Insets.EMPTY);
         Background background = new Background(backgroundFill);
         hbox.setBackground(background);
         for (WeatherData forecastData : forecastList) {
-            VBox vBox = getVBox(forecastList, leftSide);
+            VBox vBox = getVBox(forecastList, leftSide, hbox);
             Label temperatureLabel = new Label(String.format("%.1f°C", forecastData.getTemperature()));
             temperatureLabel.setPrefSize(150, 150);
             temperatureLabel.setTextAlignment(TextAlignment.JUSTIFY);
@@ -248,6 +281,7 @@ public class MainWindowController{
             hbox.getChildren().addAll(vBox, addVerticalSeparator());
             HBox.setHgrow(vBox, Priority.ALWAYS);
         }
+        setInnerShadowForFirstVBox(forecastList.get(0), hbox, leftSide);
         return hbox;
     }
 
@@ -287,7 +321,7 @@ public class MainWindowController{
         rightVBoxInstanceWindMax.setText(String.valueOf(weatherData.getWindDeg()) + "°");
     }
 
-    private void leftCityTextFieldEnterKeyListener(TextField textField, Runnable action) {
+    private void TextFieldEnterKeyListener(TextField textField, Runnable action) {
         textField.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 //ackLeftLocationButton();
@@ -302,12 +336,12 @@ public class MainWindowController{
         return separator;
     }
 
-    private VBox getVBox(List<WeatherData> forecastList, boolean leftSide){
+    private VBox getVBox(List<WeatherData> forecastList, boolean leftSide, HBox hbox){
         VBox vBox = new VBox();
         if(leftSide){
-            vBox.setPrefWidth(leftHBoxForecast.getWidth() / forecastList.size());
+            vBox.setPrefWidth(hbox.getWidth() / forecastList.size());
         } else{
-            vBox.setPrefWidth(rightHBoxForecast.getWidth() / forecastList.size());
+            vBox.setPrefWidth(hbox.getWidth() / forecastList.size());
         }
         vBox.setSpacing(10);
         vBox.setPadding(new Insets(10, 10, 10, 10));

@@ -36,60 +36,6 @@ public class FxmlUtils {
         return ResourceBundle.getBundle("bundles.messages");
     }
 
-/*    public static String getLeftLocation() {
-        JSONObject config = readConfigFile();
-        if (config.has(LEFT_LOCATION_PROPERTY)) {
-            return config.getString(LEFT_LOCATION_PROPERTY);
-        }
-        return "";
-    }
-
-    public static String getRightLocation() {
-        JSONObject config = readConfigFile();
-        if (config.has(RIGHT_LOCATION_PROPERTY)) {
-            return config.getString(RIGHT_LOCATION_PROPERTY);
-        }
-        return "";
-    }
-
-    public static void setLeftLocation(String leftLocation) {
-        JSONObject config = readConfigFile();
-        config.put(LEFT_LOCATION_PROPERTY, leftLocation);
-        writeConfigFile(config);
-    }
-    public static void setRightLocation(String leftLocation) {
-        JSONObject config = readConfigFile();
-        config.put(RIGHT_LOCATION_PROPERTY, leftLocation);
-        writeConfigFile(config);
-    }
-
-    private static JSONObject readConfigFile(){
-        JSONObject config = new JSONObject();
-        try(FileReader fileReader = new FileReader(CONFIG_FILE_NAME)){
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            StringBuilder stringBuilder = new StringBuilder();
-            String line = bufferedReader.readLine();
-            while(line != null){
-                stringBuilder.append(line);
-                line = bufferedReader.readLine();
-            }
-            config = new JSONObject(stringBuilder.toString());
-        } catch (IOException e) {
-            DialogUtils.errorDialog(e.getMessage());
-        }
-        return config;
-    }
-
-    private static void writeConfigFile(JSONObject config) {
-        try {
-            File configFile = new File(CONFIG_FILE_NAME);
-            FileWriter fileWriter = new FileWriter(configFile);
-            fileWriter.write(config.toString(4));
-            fileWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
     public static String getLeftLocation() {
         return leftLocation;
     }
