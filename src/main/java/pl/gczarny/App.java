@@ -14,17 +14,12 @@ public class App extends Application
     private static final String FXML_MAIN_WINDOW = "/fxml/MainWindow.fxml";
     public static void main(String[] args)
     {
-        System.out.println( "Hello World!" );
         launch(args);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        Locale.setDefault(new Locale("pl"));
-/*        FXMLLoader loader = new FXMLLoader(this.getClass().getResource(FXML_MAIN_WINDOW));
-        ResourceBundle bundle = ResourceBundle.getBundle("bundles.messages");
-        loader.setResources(bundle);
-        Parent parent = loader.load();*/
+        Locale.setDefault(new Locale("en"));
         SplitPane parent = FxmlUtils.fxmlLoader(FXML_MAIN_WINDOW);
         Scene scene = new Scene(parent);
         stage.setScene(scene);
@@ -32,6 +27,5 @@ public class App extends Application
         stage.setMaxHeight(600);
         stage.setTitle(FxmlUtils.getResourceBundle().getString("title.application"));
         stage.show();
-
     }
 }

@@ -7,10 +7,10 @@ module WeatherApp {
     requires com.google.common;
     requires org.json;
 
-    opens pl.gczarny to javafx.fxml;
     exports pl.gczarny;
     exports pl.gczarny.controller;
     opens pl.gczarny.controller to javafx.fxml;
     opens pl.gczarny.utils;
+    opens pl.gczarny;
 
 }

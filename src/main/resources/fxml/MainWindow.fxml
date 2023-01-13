@@ -26,12 +26,12 @@
           <children>
             <MenuBar prefHeight="26.0" prefWidth="472.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <menus>
-                <Menu mnemonicParsing="false" text="Plik">
+                <Menu mnemonicParsing="false" text="%file">
                   <items>
-                    <MenuItem mnemonicParsing="false" onAction="#closeApplication" text="Zamknij" />
+                    <MenuItem mnemonicParsing="false" onAction="#closeApplication" text="%close" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Edycja">
+                <Menu mnemonicParsing="false" text="%edit">
                      <items>
                         <RadioMenuItem mnemonicParsing="false" onAction="#setModena" selected="true" text="Modena">
                            <toggleGroup>
@@ -41,9 +41,9 @@
                         <RadioMenuItem mnemonicParsing="false" onAction="#setCaspian" text="Caspian" toggleGroup="$styleGroup" />
                      </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Pomoc">
+                <Menu mnemonicParsing="false" text="%help">
                   <items>
-                    <MenuItem mnemonicParsing="false" onAction="#showAbout" text="O aplikacji" />
+                    <MenuItem mnemonicParsing="false" onAction="#showAbout" text="%about" />
                   </items>
                 </Menu>
               </menus>
@@ -112,7 +112,7 @@
                      <children>
                         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="158.0" text="%population" textAlignment="CENTER">
                            <font>
-                              <Font name="System Bold Italic" size="16.0" />
+                              <Font name="System Bold" size="16.0" />
                            </font>
                         </Label>
                         <Label fx:id="leftPopulation" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="158.0" textAlignment="CENTER">
