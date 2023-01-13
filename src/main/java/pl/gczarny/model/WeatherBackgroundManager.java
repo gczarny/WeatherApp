@@ -4,6 +4,7 @@ import com.google.common.collect.Range;
 import javafx.scene.layout.*;
 import pl.gczarny.utils.DialogUtils;
 
+import java.net.URL;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
@@ -27,8 +28,12 @@ public class WeatherBackgroundManager {
         for (WeatherCategory category : WeatherCategory.values()) {
             Map<String, LazyImage> imagesByTimeOfDay = new HashMap<>();
             for (String timeOfDay : List.of("Morning", "Afternoon", "Evening", "Night")) {
-                String path = PATH_PATTERN + category.name().toLowerCase() + "_" + timeOfDay.toLowerCase() + ".png";
-                imagesByTimeOfDay.put(timeOfDay, new LazyImage(path));
+                String fileName = category.name().toLowerCase() + "_" + timeOfDay.toLowerCase() + ".png";
+                URL fileUrl = WeatherBackgroundManager.class.getResource(PATH_PATTERN + fileName);
+                if (fileUrl == null) {
+                    throw new IllegalStateException("File not found :" + PATH_PATTERN + fileName);
+                }
+                imagesByTimeOfDay.put(timeOfDay, new LazyImage(fileUrl.toString()));
             }
             BACKGROUND_IMAGE_BY_WEATHER_DESCRIPTION_BY_TIME_OF_DAY.put(category, imagesByTimeOfDay);
         }
