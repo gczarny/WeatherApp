@@ -10,11 +10,11 @@ import java.io.*;
 import java.util.ResourceBundle;
 
 /*
-** Responsible for loading all fxml files in our app
+** Responsible for loading all fxml files in app
  */
 public class FxmlUtils {
 
-    private static final String CONFIG_FILE_NAME = "src/main/resources/config.json";
+    private static final String CONFIG_FILE_NAME = "config.json";
     private static final String LEFT_LOCATION_PROPERTY = "leftLocation";
     private static final String RIGHT_LOCATION_PROPERTY = "rightLocation";
     private static String leftLocation;
@@ -54,27 +54,23 @@ public class FxmlUtils {
 
     public static void readConfigFile() {
         try {
-            // odczytaj plik config.json
-            FileReader reader = new FileReader(CONFIG_FILE_NAME);
+            String configFilePath = CONFIG_FILE_NAME;
+            FileReader reader = new FileReader(configFilePath);
             JSONObject config = new JSONObject(new JSONTokener(reader));
-
-            // przypisz wartości do pól leftLocation i rightLocation
             leftLocation = config.getString(LEFT_LOCATION_PROPERTY);
             rightLocation = config.getString(RIGHT_LOCATION_PROPERTY);
+            reader.close();
         } catch (IOException | JSONException e) {
             DialogUtils.errorDialog(e.getMessage());
         }
     }
-
     public static void writeConfigFile() {
         try {
-            // utwórz obiekt JSON zawierający wartości pól leftLocation i rightLocation
+            String configFilePath = CONFIG_FILE_NAME;
+            FileWriter writer = new FileWriter(configFilePath);
             JSONObject config = new JSONObject();
             config.put(LEFT_LOCATION_PROPERTY, leftLocation);
             config.put(RIGHT_LOCATION_PROPERTY, rightLocation);
-
-            // zapisz obiekt JSON do pliku config.json
-            FileWriter writer = new FileWriter(CONFIG_FILE_NAME);
             writer.write(config.toString(2));
             writer.close();
         } catch (IOException | JSONException e) {

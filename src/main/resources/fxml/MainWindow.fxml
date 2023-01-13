@@ -203,8 +203,7 @@
          <rotationAxis>
             <Point3D />
          </rotationAxis>
-      
-                                          </AnchorPane>
+      </AnchorPane>
       <AnchorPane fx:id="rightAnchorPane">
          <children>
             <VBox alignment="TOP_CENTER" layoutY="26.0" prefHeight="188.0" prefWidth="636.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">

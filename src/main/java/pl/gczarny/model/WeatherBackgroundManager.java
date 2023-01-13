@@ -54,7 +54,8 @@ public class WeatherBackgroundManager {
                     BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
             pane.setBackground(new Background(bgImage));
         } catch (NullPointerException e){
-            e.printStackTrace();
+            DialogUtils.errorDialog(e.getMessage());
+        } catch (IllegalArgumentException e){
             DialogUtils.errorDialog(e.getMessage());
         }
     }
