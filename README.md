@@ -8,4 +8,4 @@ A simple Weather application crated with JavaFX and Maven.
 - The background is changing depending on weather
 
 ## Screenshots
-![image](https://user-images.githubusercontent.com/69506950/212477664-a1de04c5-b5d2-4c38-8e1f-f3e948097986.png)
+![image](https://user-images.githubusercontent.com/69506950/212477733-66142ebf-7569-4a4c-bcc8-2fc70ba70f36.png)
