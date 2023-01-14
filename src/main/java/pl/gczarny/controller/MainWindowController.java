@@ -219,7 +219,7 @@ public class MainWindowController{
         Background background = new Background(backgroundFill);
         hbox.setBackground(background);
         for (WeatherData forecastData : forecastList) {
-            VBox vBox = getVBox(forecastList, leftSide, hbox);
+            VBox vBox = getVBox(forecastList, hbox);
             Label temperatureLabel = createLabelWithPrefSize(String.format("%.1f°C", forecastData.getTemperature()), true,
                     150, 150, 12);
             Label dateLabel = createLabel(String.format("%.1f°C", forecastData.getTemperature()), 15, "Verdana");
@@ -272,13 +272,10 @@ public class MainWindowController{
         separator.setOrientation(Orientation.VERTICAL);
         return separator;
     }
-    private VBox getVBox(List<WeatherData> forecastList, boolean leftSide, HBox hbox){
+
+    private VBox getVBox(List<WeatherData> forecastList, HBox hbox){
         VBox vBox = new VBox();
-        if(leftSide){
-            vBox.setPrefWidth(hbox.getWidth() / forecastList.size());
-        } else{
-            vBox.setPrefWidth(hbox.getWidth() / forecastList.size());
-        }
+        vBox.setPrefWidth(hbox.getWidth() / forecastList.size());
         vBox.setSpacing(10);
         vBox.setPadding(new Insets(10, 10, 10, 10));
         vBox.setPrefWidth(Region.USE_COMPUTED_SIZE);
