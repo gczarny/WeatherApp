@@ -116,8 +116,8 @@ public class MainWindowController{
 
     @FXML
     public void initialize() {
-        TextFieldEnterKeyListener(leftCityTextField, this::ackLeftLocationButton);
-        TextFieldEnterKeyListener(rightCityTextField, this::ackRightLocationButton);
+        TextFieldEnterKeyListener(leftCityTextField, this::ackLeftLocationButton, KeyCode.ENTER);
+        TextFieldEnterKeyListener(rightCityTextField, this::ackRightLocationButton, KeyCode.ENTER);
         try {
             FxmlUtils.readConfigFile();
             rightLocation = FxmlUtils.getRightLocation();
@@ -167,7 +167,7 @@ public class MainWindowController{
         }
     }
     private void btnDemandActionOnSucceededEvent(Label status, Label city, String location){
-        resetStatusLabelAfterDelay(status);
+        resetStatusLabelAfterDelay(status, 3);
         city.setText(location);
         status.setText(FxmlUtils.getResourceBundle().getString("data.status.done"));
 
@@ -219,10 +219,10 @@ public class MainWindowController{
         Background background = new Background(backgroundFill);
         hbox.setBackground(background);
         for (WeatherData forecastData : forecastList) {
-            VBox vBox = getVBox(forecastList, hbox);
+            VBox vBox = getVBox(forecastList, hbox, new Insets(10, 10, 10, 10));
             Label temperatureLabel = createLabelWithPrefSize(String.format("%.1f°C", forecastData.getTemperature()), true,
-                    150, 150, 12);
-            Label dateLabel = createLabel(String.format("%.1f°C", forecastData.getTemperature()), 15, "Verdana");
+                    150, 150, 12, "Verdana");
+            Label dateLabel = createLabel(String.format(forecastData.getDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE)), 12, "Verdana");
             vBox.getChildren().addAll(temperatureLabel, dateLabel, new Separator(), updateImageViews(forecastData.getIcon()));
             vBox.getProperties().put("weatherData", forecastData);
             makeVBoxClickable(vBox, forecastData, hbox, leftSide);
@@ -260,9 +260,9 @@ public class MainWindowController{
         windSped.setText(weatherData.getWindSpeed() + " m/s");
         windMax.setText(weatherData.getWindDeg() + "°");
     }
-    private void TextFieldEnterKeyListener(TextField textField, Runnable action) {
+    private void TextFieldEnterKeyListener(TextField textField, Runnable action, KeyCode keycode) {
         textField.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
+            if (event.getCode() == keycode) {
                 action.run();
             }
         });
@@ -273,17 +273,17 @@ public class MainWindowController{
         return separator;
     }
 
-    private VBox getVBox(List<WeatherData> forecastList, HBox hbox){
+    private VBox getVBox(List<WeatherData> forecastList, HBox hbox, Insets insets){
         VBox vBox = new VBox();
         vBox.setPrefWidth(hbox.getWidth() / forecastList.size());
         vBox.setSpacing(10);
-        vBox.setPadding(new Insets(10, 10, 10, 10));
+        vBox.setPadding(insets);
         vBox.setPrefWidth(Region.USE_COMPUTED_SIZE);
         vBox.setAlignment(Pos.CENTER);
         return vBox;
     }
-    private void resetStatusLabelAfterDelay(Label label) {
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> label.setText("")));
+    private void resetStatusLabelAfterDelay(Label label, double delay) {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(delay), event -> label.setText("")));
         timeline.play();
     }
     private Label createLabel(String text, int fontSize, String fontFamily){
@@ -294,14 +294,14 @@ public class MainWindowController{
         label.setWrapText(true);
         return label;
     }
-    private Label createLabelWithPrefSize(String text, boolean setPrefSize, double prefWidth, double prefHeight, int fontSize){
+    private Label createLabelWithPrefSize(String text, boolean setPrefSize, double prefWidth, double prefHeight, int fontSize, String fontFamily){
         Label label = new Label(text);
         if(setPrefSize){
             label.setPrefSize(prefWidth, prefHeight);
         }
         label.setTextAlignment(TextAlignment.JUSTIFY);
         label.setAlignment(Pos.CENTER);
-        label.setFont(Font.font("Verdana", FontWeight.BOLD,fontSize));
+        label.setFont(Font.font(fontFamily, FontWeight.BOLD,fontSize));
         label.setWrapText(true);
         return label;
     }
