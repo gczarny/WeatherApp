@@ -24,18 +24,18 @@ public class WeatherBackgroundManager {
             Range.closed(801, 804), WeatherCategory.CLOUDS
     );
 
-    private static final Map<WeatherCategory, Map<String, LazyImage>> BACKGROUND_IMAGE_BY_WEATHER_DESCRIPTION_BY_TIME_OF_DAY = new HashMap<>();
+    private static final Map<WeatherCategory, Map<WeatherTimeOfDay, LazyImage>> BACKGROUND_IMAGE_BY_WEATHER_DESCRIPTION_BY_TIME_OF_DAY = new HashMap<>();
 
     static {
         for (WeatherCategory category : WeatherCategory.values()) {
-            Map<WeatherTimeOfDay, LazyImage> images = new EnumMap<>(WeatherTimeOfDay.class);
-            for(WeatherTimeOfDay timeOfDay : WeatherTimeOfDay.values()){
-                String fileName = category.name().toLowerCase() + "_" + timeOfDay.getTimeOfDay().toLowerCase() + ".png";
+            Map<WeatherTimeOfDay, LazyImage> imagesByTimeOfDay = new EnumMap<>(WeatherTimeOfDay.class);
+            for (WeatherTimeOfDay timeOfDay : WeatherTimeOfDay.values()) {
+                String fileName = category.name().toLowerCase() + "_" + timeOfDay.name().toLowerCase() + ".png";
                 URL fileUrl = WeatherBackgroundManager.class.getResource(PATH_PATTERN + fileName);
                 if (fileUrl == null) {
-                    throw new IllegalStateException(FxmlUtils.getResourceBundle().getString("error.file.not.found") + PATH_PATTERN + fileName);
+                    throw new IllegalStateException("File not found :" + PATH_PATTERN + fileName);
                 }
-                imagesByTimeOfDay.put(timeOfDay.name(), new LazyImage(fileUrl.toString()));
+                imagesByTimeOfDay.put(timeOfDay, new LazyImage(fileUrl.toString()));
             }
             BACKGROUND_IMAGE_BY_WEATHER_DESCRIPTION_BY_TIME_OF_DAY.put(category, imagesByTimeOfDay);
         }
@@ -48,7 +48,7 @@ public class WeatherBackgroundManager {
                 .findFirst()
                 .orElseThrow();
 
-        String timeOfDay = getTimeOfDay(localTime);
+        WeatherTimeOfDay timeOfDay = getTimeOfDay(localTime);
         LazyImage backgroundImage = BACKGROUND_IMAGE_BY_WEATHER_DESCRIPTION_BY_TIME_OF_DAY.get(weatherDescription).get(timeOfDay);
         try{
             BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, true);
@@ -62,18 +62,18 @@ public class WeatherBackgroundManager {
         }
     }
 
-    private static String getTimeOfDay(LocalTime localTime){
+    private static WeatherTimeOfDay getTimeOfDay(LocalTime localTime){
         if (localTime.isBefore(LocalTime.of(12, 0))) {
-            return WeatherTimeOfDay.MORNING.name();
+            return WeatherTimeOfDay.MORNING;
         } else if (localTime.isBefore(LocalTime.of(18, 0))) {
             //return "Afternoon";
-            return WeatherTimeOfDay.AFTERNOON.name();
+            return WeatherTimeOfDay.AFTERNOON;
         } else if (localTime.isBefore(LocalTime.of(20, 0))) {
             //return "Evening";
-            return WeatherTimeOfDay.EVENING.name();
+            return WeatherTimeOfDay.EVENING;
         } else {
             //return "Night";
-            return WeatherTimeOfDay.NIGHT.name();
+            return WeatherTimeOfDay.NIGHT;
         }
     }
 }
