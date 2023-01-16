@@ -14,6 +14,7 @@ import java.util.Map;
 
 public class WeatherBackgroundManager {
     private static final String PATH_PATTERN = "/images/backgrounds/";
+    private static final BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, true);
 
     private static final Map<Range<Integer>, WeatherCategory> WEATHER_DESCRIPTION_BY_ID_RANGE = Map.of(
             Range.closed(200, 232), WeatherCategory.THUNDERSTORM,
@@ -51,7 +52,6 @@ public class WeatherBackgroundManager {
         WeatherTimeOfDay timeOfDay = getTimeOfDay(localTime);
         LazyImage backgroundImage = BACKGROUND_IMAGE_BY_WEATHER_DESCRIPTION_BY_TIME_OF_DAY.get(weatherDescription).get(timeOfDay);
         try{
-            BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, true);
             BackgroundImage bgImage = new BackgroundImage(backgroundImage.getImageView().getImage(), BackgroundRepeat.NO_REPEAT,
                     BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
             pane.setBackground(new Background(bgImage));
