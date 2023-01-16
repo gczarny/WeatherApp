@@ -1,4 +1,4 @@
-package pl.gczarny.model;
+package pl.gczarny.view;
 
 public enum WeatherCategory {
     THUNDERSTORM("Thunderstorm"),

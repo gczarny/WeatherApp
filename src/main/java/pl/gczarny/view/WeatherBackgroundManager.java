@@ -2,11 +2,12 @@ package pl.gczarny.view;
 
 import com.google.common.collect.Range;
 import javafx.scene.layout.*;
-import pl.gczarny.model.WeatherCategory;
 import pl.gczarny.utils.DialogUtils;
+import pl.gczarny.utils.FxmlUtils;
 
 import java.net.URL;
 import java.time.LocalTime;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,14 +28,14 @@ public class WeatherBackgroundManager {
 
     static {
         for (WeatherCategory category : WeatherCategory.values()) {
-            Map<String, LazyImage> imagesByTimeOfDay = new HashMap<>();
-            for (String timeOfDay : List.of("Morning", "Afternoon", "Evening", "Night")) {
-                String fileName = category.name().toLowerCase() + "_" + timeOfDay.toLowerCase() + ".png";
+            Map<WeatherTimeOfDay, LazyImage> images = new EnumMap<>(WeatherTimeOfDay.class);
+            for(WeatherTimeOfDay timeOfDay : WeatherTimeOfDay.values()){
+                String fileName = category.name().toLowerCase() + "_" + timeOfDay.getTimeOfDay().toLowerCase() + ".png";
                 URL fileUrl = WeatherBackgroundManager.class.getResource(PATH_PATTERN + fileName);
                 if (fileUrl == null) {
-                    throw new IllegalStateException("File not found :" + PATH_PATTERN + fileName);
+                    throw new IllegalStateException(FxmlUtils.getResourceBundle().getString("error.file.not.found") + PATH_PATTERN + fileName);
                 }
-                imagesByTimeOfDay.put(timeOfDay, new LazyImage(fileUrl.toString()));
+                imagesByTimeOfDay.put(timeOfDay.name(), new LazyImage(fileUrl.toString()));
             }
             BACKGROUND_IMAGE_BY_WEATHER_DESCRIPTION_BY_TIME_OF_DAY.put(category, imagesByTimeOfDay);
         }
@@ -63,13 +64,16 @@ public class WeatherBackgroundManager {
 
     private static String getTimeOfDay(LocalTime localTime){
         if (localTime.isBefore(LocalTime.of(12, 0))) {
-            return "Morning";
+            return WeatherTimeOfDay.MORNING.name();
         } else if (localTime.isBefore(LocalTime.of(18, 0))) {
-            return "Afternoon";
+            //return "Afternoon";
+            return WeatherTimeOfDay.AFTERNOON.name();
         } else if (localTime.isBefore(LocalTime.of(20, 0))) {
-            return "Evening";
+            //return "Evening";
+            return WeatherTimeOfDay.EVENING.name();
         } else {
-            return "Night";
+            //return "Night";
+            return WeatherTimeOfDay.NIGHT.name();
         }
     }
 }
