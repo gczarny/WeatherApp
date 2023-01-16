@@ -18,7 +18,7 @@ public class App extends Application
     }
     @Override
     public void start(Stage stage) throws Exception {
-        Locale.setDefault(new Locale("pl"));
+        Locale.setDefault(new Locale("en"));
         SplitPane parent = FxmlUtils.fxmlLoader(FXML_MAIN_WINDOW);
         Scene scene = new Scene(parent);
         stage.setScene(scene);

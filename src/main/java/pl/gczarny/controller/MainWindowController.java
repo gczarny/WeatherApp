@@ -26,6 +26,8 @@ import pl.gczarny.model.*;
 import pl.gczarny.utils.DialogUtils;
 import pl.gczarny.utils.FxmlUtils;
 import pl.gczarny.utils.exceptions.WeatherDataFetchException;
+import pl.gczarny.view.WeatherBackgroundManager;
+import pl.gczarny.view.WeatherIconManager;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;

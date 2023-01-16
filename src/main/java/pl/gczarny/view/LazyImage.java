@@ -1,4 +1,4 @@
-package pl.gczarny.model;
+package pl.gczarny.view;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
