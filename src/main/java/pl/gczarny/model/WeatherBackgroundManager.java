@@ -1,8 +1,7 @@
-package pl.gczarny.view;
+package pl.gczarny.model;
 
 import com.google.common.collect.Range;
 import javafx.scene.layout.*;
-import pl.gczarny.model.WeatherCategory;
 import pl.gczarny.utils.DialogUtils;
 
 import java.net.URL;
