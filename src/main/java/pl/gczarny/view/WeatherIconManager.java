@@ -1,4 +1,4 @@
-package pl.gczarny.model;
+package pl.gczarny.view;
 
 public class WeatherIconManager {
     private static final String ICON_URL_PATTERN = "http://openweathermap.org/img/wn/%s@2x.png";
