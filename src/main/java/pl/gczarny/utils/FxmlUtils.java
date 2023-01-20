@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.*;
+import java.net.URL;
 import java.util.ResourceBundle;
 
 /*
@@ -14,7 +15,7 @@ import java.util.ResourceBundle;
  */
 public class FxmlUtils {
 
-    private static final String CONFIG_FILE_NAME = "config.json";
+    private static final String CONFIG_FILE_NAME = "/config.json";
     private static final String LEFT_LOCATION_PROPERTY = "leftLocation";
     private static final String RIGHT_LOCATION_PROPERTY = "rightLocation";
     private static String leftLocation;
@@ -54,24 +55,26 @@ public class FxmlUtils {
 
     public static void readConfigFile() {
         try {
-            String configFilePath = CONFIG_FILE_NAME;
-            FileReader reader = new FileReader(configFilePath);
-            JSONObject config = new JSONObject(new JSONTokener(reader));
+            InputStream input = FxmlUtils.class.getResourceAsStream(CONFIG_FILE_NAME);
+            JSONObject config = new JSONObject(new JSONTokener(input));
             leftLocation = config.getString(LEFT_LOCATION_PROPERTY);
             rightLocation = config.getString(RIGHT_LOCATION_PROPERTY);
-            reader.close();
+            input.close();
         } catch (IOException | JSONException e) {
             DialogUtils.errorDialog(e.getMessage());
         }
     }
+
     public static void writeConfigFile() {
         try {
-            String configFilePath = CONFIG_FILE_NAME;
-            FileWriter writer = new FileWriter(configFilePath);
+            URL url = FxmlUtils.class.getResource(CONFIG_FILE_NAME);
+            File file = new File(url.getFile());
             JSONObject config = new JSONObject();
             config.put(LEFT_LOCATION_PROPERTY, leftLocation);
             config.put(RIGHT_LOCATION_PROPERTY, rightLocation);
+            FileWriter writer = new FileWriter(file);
             writer.write(config.toString(2));
+            writer.flush();
             writer.close();
         } catch (IOException | JSONException e) {
             DialogUtils.errorDialog(e.getMessage());
