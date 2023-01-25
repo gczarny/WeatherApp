@@ -1,4 +1,4 @@
-package pl.gczarny.model;
+package pl.gczarny.model.client;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -19,12 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.JsonObject;
+import pl.gczarny.model.WeatherData;
 import pl.gczarny.utils.FxmlUtils;
 import pl.gczarny.utils.exceptions.WeatherDataFetchException;
 
-public class WeatherDataFetcher {
+public class OpenWeatherMapApiFetcher implements WeatherClient{
 
-    public static List<WeatherData> fetchForecastData(String location) throws WeatherDataFetchException {
+    @Override
+    public List<WeatherData> fetchForecastData(String location) throws WeatherDataFetchException {
         JsonObject fetchedJsonData = getJsonObjectFromApi(location);
         JsonArray jsonForecastArray = fetchedJsonData.getAsJsonArray("list");
         JsonObject jsonCityObject = fetchedJsonData.getAsJsonObject("city");
@@ -79,7 +81,7 @@ public class WeatherDataFetcher {
     }
     private static JsonObject getJsonObjectFromApi(String location) throws WeatherDataFetchException {
         try{
-            String urlString = String.format(Config.getForecastApiUrl(), URLEncoder.encode(location, StandardCharsets.UTF_8.toString()));
+            String urlString = String.format(Config.getForecastApiUrl(), URLEncoder.encode(location, StandardCharsets.UTF_8));
             URL url = new URL(urlString);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
@@ -105,8 +107,8 @@ public class WeatherDataFetcher {
     }
     private static double getDoubleWeatherDataFromJsonObject(JsonObject jsonObject, String memberName, String data){
         JsonObject json = jsonObject.getAsJsonObject(memberName);
-        double returnData = json.get(data).getAsDouble();
-        return returnData;
+        //double returnData = json.get(data).getAsDouble();
+        return json.get(data).getAsDouble();
     }
 
     private static boolean shouldAddForecastData(List<WeatherData> forecastList, LocalDateTime dateTime, String timestmp){

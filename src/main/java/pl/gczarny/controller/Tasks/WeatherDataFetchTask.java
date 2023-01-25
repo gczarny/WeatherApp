@@ -2,7 +2,9 @@ package pl.gczarny.controller.Tasks;
 
 import javafx.concurrent.Task;
 import pl.gczarny.model.WeatherData;
-import pl.gczarny.model.WeatherDataFetcher;
+import pl.gczarny.model.WeatherFactory;
+import pl.gczarny.model.client.OpenWeatherMapApiFetcher;
+import pl.gczarny.model.client.WeatherClient;
 
 import java.util.List;
 
@@ -15,6 +17,7 @@ public class WeatherDataFetchTask extends Task<List<WeatherData>> {
 
     @Override
     protected List<WeatherData> call() throws Exception {
-        return WeatherDataFetcher.fetchForecastData(location);
+        WeatherClient weatherClient = new WeatherFactory().createWeatherClient();
+        return weatherClient.fetchForecastData(location);
     }
 }
