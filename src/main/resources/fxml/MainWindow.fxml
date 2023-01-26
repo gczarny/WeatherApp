@@ -8,11 +8,9 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioMenuItem?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -48,157 +46,50 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <VBox alignment="TOP_CENTER" layoutY="26.0" prefHeight="188.0" prefWidth="596.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
-               <children>
-                  <Label alignment="CENTER" lineSpacing="4.0" prefHeight="33.0" style="-fx-line-spacing: 4;" text="%your.location" underline="true">
-                     <font>
-                        <Font name="Calibri Bold Italic" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="369.0" text="%set.location">
-                     <font>
-                        <Font size="17.0" />
-                     </font>
-                  </Label>
-                  <HBox maxWidth="350.0">
-                     <VBox.margin>
-                        <Insets bottom="2.0" />
-                     </VBox.margin>
-                     <children>
-                        <TextField fx:id="leftCityTextField" alignment="CENTER" maxWidth="-Infinity" prefWidth="350.0" promptText="%location" scaleShape="false">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </TextField>
-                        <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#refreshLeftButton" prefHeight="22.0" prefWidth="22.0" text="Refresh">
-                           <graphic>
-                              <ImageView fitHeight="33.0" fitWidth="29.0">
-                                 <image>
-                                    <Image url="@../images/refresh_icon.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
-                     </children>
-                  </HBox>
-                    <Button alignment="CENTER" onAction="#ackLeftLocationButton" prefHeight="36.0" prefWidth="134.0" text="%acknowledge" textAlignment="CENTER">
-                     <VBox.margin>
-                        <Insets bottom="15.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
-                  <Label fx:id="statusLeftLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="368.0" />
-               </children>
-            </VBox>
-            <HBox layoutX="152.0" layoutY="221.0" style="-fx-border-style: solid;" AnchorPane.bottomAnchor="279.0" AnchorPane.leftAnchor="152.0" AnchorPane.rightAnchor="156.0" AnchorPane.topAnchor="221.0">
-               <children>
-                  <VBox prefHeight="34.0" prefWidth="158.0">
-                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="158.0" text="%city" textAlignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="16.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="leftCity" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="158.0" textAlignment="CENTER">
-                           <font>
-                              <Font name="System Bold Italic" size="12.0" />
-                           </font></Label>
-                     </children>
-                  </VBox>
-                  <Separator orientation="VERTICAL" prefHeight="200.0" />
-                  <VBox prefHeight="34.0" prefWidth="158.0">
-                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="158.0" text="%population" textAlignment="CENTER">
-                           <font>
-                              <Font name="System Bold" size="16.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="leftPopulation" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="158.0" textAlignment="CENTER">
-                           <font>
-                              <Font name="System Bold Italic" size="12.0" />
-                           </font></Label>
-                     </children>
-                     <effect>
-                        <InnerShadow offsetX="10.0" offsetY="10.0" />
-                     </effect>
-                  </VBox>
-               </children>
-            </HBox>
-            <HBox fx:id="leftHBoxForecast" layoutY="264.0" maxWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="174.0" prefWidth="549.0" AnchorPane.bottomAnchor="72.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-            <Separator layoutX="16.0" layoutY="447.0" prefHeight="0.0" prefWidth="562.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="18.0" />
-            <HBox layoutY="481.0" prefHeight="63.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-               <children>
-                  <Label fx:id="leftVBoxInstanceDate" alignment="CENTER" contentDisplay="CENTER" prefHeight="63.0" prefWidth="92.0" text="%date" textAlignment="CENTER">
-                     <padding>
-                        <Insets left="4.0" />
-                     </padding>
-                     <HBox.margin>
-                        <Insets left="3.0" />
-                     </HBox.margin>
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Label>
-                  <Separator orientation="VERTICAL" prefHeight="200.0" />
-                  <VBox prefHeight="63.0">
-                     <children>
-                        <Label alignment="CENTER" prefHeight="22.0" prefWidth="126.0" text="%pressure">
-                           <font>
-                              <Font name="System Bold" size="16.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="leftVBoxInstancePressure" alignment="CENTER" contentDisplay="CENTER" prefHeight="41.0" prefWidth="125.0">
-                           <font>
-                              <Font name="System Bold Italic" size="12.0" />
-                           </font></Label>
-                     </children>
-                  </VBox>
-                  <Separator orientation="VERTICAL" prefHeight="200.0" />
-                  <VBox prefHeight="63.0">
-                     <children>
-                        <Label alignment="CENTER" prefHeight="22.0" prefWidth="126.0" text="%humidity">
-                           <font>
-                              <Font name="System Bold" size="16.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="leftVBoxInstanceHumidity" alignment="CENTER" contentDisplay="CENTER" prefHeight="41.0" prefWidth="125.0">
-                           <font>
-                              <Font name="System Bold Italic" size="12.0" />
-                           </font></Label>
-                     </children>
-                  </VBox>
-                  <Separator orientation="VERTICAL" prefHeight="200.0" />
-                  <VBox prefHeight="63.0">
-                     <children>
-                        <Label alignment="CENTER" prefHeight="22.0" prefWidth="126.0" text="%wind.speed">
-                           <font>
-                              <Font name="System Bold" size="16.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="leftVBoxInstanceWindSpeed" alignment="CENTER" contentDisplay="CENTER" prefHeight="41.0" prefWidth="125.0">
-                           <font>
-                              <Font name="System Bold Italic" size="12.0" />
-                           </font></Label>
-                     </children>
-                  </VBox>
-                  <Separator orientation="VERTICAL" prefHeight="200.0" />
-                  <VBox prefHeight="63.0">
-                     <children>
-                        <Label alignment="CENTER" prefHeight="22.0" prefWidth="126.0" text="%wind.deg">
-                           <font>
-                              <Font name="System Bold" size="16.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="leftVBoxInstanceWindMax" alignment="CENTER" contentDisplay="CENTER" prefHeight="41.0" prefWidth="125.0">
-                           <font>
-                              <Font name="System Bold Italic" size="12.0" />
-                           </font></Label>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
+              <VBox alignment="TOP_CENTER" layoutY="26.0" prefHeight="188.0" prefWidth="596.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
+                  <children>
+                      <Label alignment="CENTER" lineSpacing="4.0" prefHeight="33.0" style="-fx-line-spacing: 4;" text="%your.location" underline="true">
+                          <font>
+                              <Font name="Calibri Bold Italic" size="14.0" />
+                          </font>
+                      </Label>
+                      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="369.0" text="%set.location">
+                          <font>
+                              <Font size="17.0" />
+                          </font>
+                      </Label>
+                      <HBox maxWidth="350.0">
+                          <VBox.margin>
+                              <Insets bottom="2.0" />
+                          </VBox.margin>
+                          <children>
+                              <TextField fx:id="leftCityTextField" alignment="CENTER" maxWidth="-Infinity" prefWidth="350.0" promptText="%location" scaleShape="false">
+                                  <font>
+                                      <Font size="18.0" />
+                                  </font>
+                              </TextField>
+                              <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#refreshLeftButton" prefHeight="22.0" prefWidth="22.0" text="Refresh">
+                                  <graphic>
+                                      <ImageView fitHeight="33.0" fitWidth="29.0">
+                                          <image>
+                                              <Image url="@../images/refresh_icon.png" />
+                                          </image>
+                                      </ImageView>
+                                  </graphic>
+                              </Button>
+                          </children>
+                      </HBox>
+                      <Button alignment="CENTER" onAction="#ackLeftLocationButton" prefHeight="36.0" prefWidth="134.0" text="%acknowledge" textAlignment="CENTER">
+                          <VBox.margin>
+                              <Insets bottom="15.0" />
+                          </VBox.margin>
+                          <font>
+                              <Font size="14.0" />
+                          </font>
+                      </Button>
+                      <fx:include fx:id="leftNested"  source="NestedWindow.fxml" />
+                  </children>
+              </VBox>
           </children>
          <rotationAxis>
             <Point3D />
@@ -206,7 +97,51 @@
       </AnchorPane>
       <AnchorPane fx:id="rightAnchorPane">
          <children>
-            <VBox alignment="TOP_CENTER" layoutY="26.0" prefHeight="188.0" prefWidth="636.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
+             <VBox alignment="TOP_CENTER" layoutY="26.0" prefHeight="188.0" prefWidth="596.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
+                 <children>
+                     <Label alignment="CENTER" lineSpacing="4.0" prefHeight="33.0" style="-fx-line-spacing: 4;" text="%your.location" underline="true">
+                         <font>
+                             <Font name="Calibri Bold Italic" size="14.0" />
+                         </font>
+                     </Label>
+                     <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="26.0" prefWidth="369.0" text="%set.location">
+                         <font>
+                             <Font size="17.0" />
+                         </font>
+                     </Label>
+                     <HBox maxWidth="350.0">
+                         <VBox.margin>
+                             <Insets bottom="2.0" />
+                         </VBox.margin>
+                         <children>
+                             <TextField fx:id="rightCityTextField" alignment="CENTER" maxWidth="-Infinity" prefWidth="350.0" promptText="%location" scaleShape="false">
+                                 <font>
+                                     <Font size="18.0" />
+                                 </font>
+                             </TextField>
+                             <Button contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#refreshRightButton" prefHeight="22.0" prefWidth="22.0" text="Refresh">
+                                 <graphic>
+                                     <ImageView fitHeight="33.0" fitWidth="29.0">
+                                         <image>
+                                             <Image url="@../images/refresh_icon.png" />
+                                         </image>
+                                     </ImageView>
+                                 </graphic>
+                             </Button>
+                         </children>
+                     </HBox>
+                     <Button alignment="CENTER" onAction="#ackRightLocationButton" prefHeight="36.0" prefWidth="134.0" text="%acknowledge" textAlignment="CENTER">
+                         <VBox.margin>
+                             <Insets bottom="15.0" />
+                         </VBox.margin>
+                         <font>
+                             <Font size="14.0" />
+                         </font>
+                     </Button>
+                     <fx:include fx:id="rightNested" source="NestedWindow.fxml" />
+                 </children>
+             </VBox>
+            <!--<VBox alignment="TOP_CENTER" layoutY="26.0" prefHeight="188.0" prefWidth="636.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="33.0" style="-fx-line-spacing: 4;" text="%your.destination" textAlignment="CENTER" underline="true">
                      <font>
@@ -350,7 +285,7 @@
                      </children>
                   </VBox>
                </children>
-            </HBox>
+            </HBox>-->
          </children>
          <rotationAxis>
             <Point3D />

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="381.0" prefWidth="623.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.gczarny.controller.NestedController">
+   <children>
+   
+          <HBox layoutX="103.0" prefHeight="54.0" prefWidth="377.0" style="-fx-border-style: solid;" AnchorPane.leftAnchor="104.0" AnchorPane.rightAnchor="105.0">
+           <children>
+               <VBox prefWidth="205.0">
+                   <children>
+                       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="205.0" text="%city" textAlignment="CENTER">
+                           <font>
+                               <Font name="System Bold" size="16.0" />
+                           </font>
+                       </Label>
+                       <Label fx:id="city" alignment="CENTER" contentDisplay="CENTER" prefWidth="205.0" textAlignment="CENTER">
+                           <font>
+                               <Font name="System Bold Italic" size="12.0" />
+                           </font>
+                  </Label>
+                   </children>
+               </VBox>
+               <Separator orientation="VERTICAL" prefWidth="2.0" />
+               <VBox prefWidth="205.0">
+                   <children>
+                       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="205.0" text="%population" textAlignment="CENTER">
+                           <font>
+                               <Font name="System Bold" size="16.0" />
+                           </font>
+                       </Label>
+                       <Label fx:id="population" alignment="CENTER" contentDisplay="CENTER" prefWidth="205.0" textAlignment="CENTER">
+                           <font>
+                               <Font name="System Bold Italic" size="12.0" />
+                           </font>
+                  </Label>
+                   </children>
+                   <effect>
+                       <InnerShadow offsetX="10.0" offsetY="10.0" />
+                   </effect>
+               </VBox>
+           </children>
+       </HBox>
+      <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="170.0" layoutY="61.0" prefHeight="17.0" prefWidth="283.0" textAlignment="CENTER" />
+       <HBox fx:id="hBoxForecast" layoutY="123.0" maxHeight="-Infinity" maxWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="174.0" prefWidth="622.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+       <Separator layoutX="31.0" layoutY="315.0" prefHeight="0.0" prefWidth="562.0" />
+       <HBox layoutY="318.0" prefHeight="63.0">
+           <children>
+               <Label fx:id="vBoxInstanceDate" alignment="CENTER" contentDisplay="CENTER" prefHeight="63.0" prefWidth="92.0" text="%date" textAlignment="CENTER">
+                   <padding>
+                       <Insets left="4.0" />
+                   </padding>
+                   <HBox.margin>
+                       <Insets left="3.0" />
+                   </HBox.margin>
+                   <font>
+                       <Font name="System Bold" size="12.0" />
+                   </font>
+               </Label>
+               <Separator orientation="VERTICAL" prefHeight="200.0" />
+               <VBox prefHeight="63.0">
+                   <children>
+                       <Label alignment="CENTER" prefHeight="22.0" prefWidth="126.0" text="%pressure">
+                           <font>
+                               <Font name="System Bold" size="16.0" />
+                           </font>
+                       </Label>
+                       <Label fx:id="vBoxInstancePressure" alignment="CENTER" contentDisplay="CENTER" prefHeight="41.0" prefWidth="125.0">
+                           <font>
+                               <Font name="System Bold Italic" size="12.0" />
+                           </font>
+                  </Label>
+                   </children>
+               </VBox>
+               <Separator orientation="VERTICAL" prefHeight="200.0" />
+               <VBox prefHeight="63.0">
+                   <children>
+                       <Label alignment="CENTER" prefHeight="22.0" prefWidth="126.0" text="%humidity">
+                           <font>
+                               <Font name="System Bold" size="16.0" />
+                           </font>
+                       </Label>
+                       <Label fx:id="vBoxInstanceHumidity" alignment="CENTER" contentDisplay="CENTER" prefHeight="41.0" prefWidth="125.0">
+                           <font>
+                               <Font name="System Bold Italic" size="12.0" />
+                           </font>
+                  </Label>
+                   </children>
+               </VBox>
+               <Separator orientation="VERTICAL" prefHeight="200.0" />
+               <VBox prefHeight="63.0">
+                   <children>
+                       <Label alignment="CENTER" prefHeight="22.0" prefWidth="126.0" text="%wind.speed">
+                           <font>
+                               <Font name="System Bold" size="16.0" />
+                           </font>
+                       </Label>
+                       <Label fx:id="vBoxInstanceWindSpeed" alignment="CENTER" contentDisplay="CENTER" prefHeight="41.0" prefWidth="125.0">
+                           <font>
+                               <Font name="System Bold Italic" size="12.0" />
+                           </font>
+                  </Label>
+                   </children>
+               </VBox>
+               <Separator orientation="VERTICAL" prefHeight="200.0" />
+               <VBox prefHeight="63.0">
+                   <children>
+                       <Label alignment="CENTER" prefHeight="22.0" prefWidth="126.0" text="%wind.deg">
+                           <font>
+                               <Font name="System Bold" size="16.0" />
+                           </font>
+                       </Label>
+                       <Label fx:id="vBoxInstanceWindMax" alignment="CENTER" contentDisplay="CENTER" prefHeight="41.0" prefWidth="125.0">
+                           <font>
+                               <Font name="System Bold Italic" size="12.0" />
+                           </font>
+                  </Label>
+                   </children>
+               </VBox>
+           </children>
+       </HBox>
+   </children>
+</AnchorPane>
