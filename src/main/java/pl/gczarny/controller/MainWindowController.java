@@ -43,7 +43,7 @@ public class MainWindowController implements Initializable {
     }
     @FXML
     void refreshLeftButton() {
-        if(leftCityTextField.getText().isEmpty() || leftLocation.isEmpty()){
+        if(leftLocation.isEmpty()){
             return;
         }
         leftCityTextField.setText(leftLocation);
@@ -51,7 +51,7 @@ public class MainWindowController implements Initializable {
     }
     @FXML
     void refreshRightButton() {
-        if(rightCityTextField.getText().isEmpty() || rightLocation.isEmpty()){
+        if(rightLocation.isEmpty()){
             return;
         }
         rightCityTextField.setText(rightLocation);

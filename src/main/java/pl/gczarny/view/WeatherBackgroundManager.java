@@ -3,13 +3,10 @@ package pl.gczarny.view;
 import com.google.common.collect.Range;
 import javafx.scene.layout.*;
 import pl.gczarny.utils.DialogUtils;
-import pl.gczarny.utils.FxmlUtils;
-
 import java.net.URL;
 import java.time.LocalTime;
 import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class WeatherBackgroundManager {

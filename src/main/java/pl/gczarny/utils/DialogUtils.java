@@ -8,9 +8,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class DialogUtils {
-
     private static ResourceBundle bundle = FxmlUtils.getResourceBundle();
-
 
     public static void dialogAboutApplication(){
         Alert informationAlert = new Alert(Alert.AlertType.INFORMATION);

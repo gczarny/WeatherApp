@@ -58,14 +58,12 @@ public class FxmlUtils {
             InputStream input = FxmlUtils.class.getResourceAsStream(CONFIG_FILE_NAME);
             JSONObject config = new JSONObject(new JSONTokener(input));
             leftLocation = config.getString(LEFT_LOCATION_PROPERTY);
-            System.out.println(leftLocation);
             rightLocation = config.getString(RIGHT_LOCATION_PROPERTY);
             input.close();
         } catch (IOException | JSONException e) {
             DialogUtils.errorDialog(e.getMessage());
         }
     }
-
     public static void writeConfigFile() {
         try {
             URL url = FxmlUtils.class.getResource(CONFIG_FILE_NAME);
