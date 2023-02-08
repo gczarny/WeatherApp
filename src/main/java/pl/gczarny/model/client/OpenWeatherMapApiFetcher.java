@@ -7,10 +7,9 @@ import pl.gczarny.Config;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.net.*;
 import java.nio.charset.*;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -77,12 +76,14 @@ public class OpenWeatherMapApiFetcher implements WeatherClient{
         return new String(json.get("name").getAsString().getBytes(), StandardCharsets.UTF_8);
     }
     private JsonObject getJsonObjectFromApi(String location) throws WeatherDataFetchException {
-        try{
-            String urlString = String.format(Config.getForecastApiUrl(), URLEncoder.encode(location, StandardCharsets.UTF_8));
+        HttpURLConnection con = null;
+        String urlString = String.format(Config.getForecastApiUrl(), URLEncoder.encode(location, StandardCharsets.UTF_8));
+        try {
             URL url = new URL(urlString);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             con.connect();
+            System.out.println(con.getResponseCode());
             if (con.getResponseCode() != 200) {
                 throw new WeatherDataFetchException(FxmlUtils.getResourceBundle().getString("error.http.response") + con.getResponseCode());
             }
@@ -92,12 +93,16 @@ public class OpenWeatherMapApiFetcher implements WeatherClient{
             while ((output = br.readLine()) != null) {
                 jsonData += output;
             }
-            con.disconnect();
+            if(jsonData.isEmpty()){
+                throw new WeatherDataFetchException(FxmlUtils.getResourceBundle().getString("error.http.response") + con.getResponseCode());
+            }
             return gson.fromJson(jsonData, JsonObject.class);
         }catch (FileNotFoundException e) {
             throw new WeatherDataFetchException(FxmlUtils.getResourceBundle().getString("error.not.found"));
-        } catch (Exception e) {
+        }catch (IOException e) {
             throw new WeatherDataFetchException(FxmlUtils.getResourceBundle().getString("error.not.found.all"));
+        }finally {
+            con.disconnect();
         }
     }
     private double getDoubleWeatherDataFromJsonObject(JsonObject jsonObject, String memberName, String data){

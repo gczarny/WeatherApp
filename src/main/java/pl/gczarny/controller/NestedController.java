@@ -80,7 +80,9 @@ public class NestedController implements Initializable {
             }
         });
         fetchTask.setOnFailed(event -> {
-            setOnFailedEvent(fetchTask);
+            //setOnFailedEvent(fetchTask);
+            DialogUtils.errorDialog(fetchTask.getException().getMessage());
+            statusLabel.setText("");
         });
         new Thread(fetchTask).start();
     }
@@ -99,13 +101,12 @@ public class NestedController implements Initializable {
 
     private void setOnFailedEvent(WeatherDataFetchTask task){
         Throwable exception = task.getException();
-        if(exception instanceof WeatherDataFetchException){
-            DialogUtils.errorDialog(exception.getMessage());
-            statusLabel.setText("");
-        }else {
-            exception.printStackTrace();
+        //if(exception instanceof WeatherDataFetchException){
+        DialogUtils.errorDialog(exception.getMessage());
+        statusLabel.setText("");
+        /*}else {
             DialogUtils.errorDialog(FxmlUtils.getResourceBundle().getString("error.not.found.all"));
-        }
+        }*/
     }
 
     private ImageView updateImageViews(String id){
