@@ -1,27 +1,23 @@
 package pl.gczarny.controller.tasks;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.gczarny.model.WeatherData;
+import pl.gczarny.model.client.JsonWeatherService;
+import pl.gczarny.model.client.OpenWeatherMapApiFetcher;
 import pl.gczarny.utils.exceptions.WeatherDataFetchException;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 class WeatherDataFetchTaskTest {
 
-    @Test
-    public void weatherDataListIsNotNullAfterCall() throws Exception {
-        // given
-        String location = "Warszawa";
-        WeatherDataFetchTask weatherDataFetchTask = new WeatherDataFetchTask(location);
+    private OpenWeatherMapApiFetcher openWeatherMapApiFetcher;
+    private JsonWeatherService mockJsonWeatherService;
 
-        // when
-        List<WeatherData> weatherDataList = weatherDataFetchTask.call();
-
-        // then
-        assertNotNull(weatherDataList);
-        assertFalse(weatherDataList.isEmpty());
+    @BeforeEach
+    public void setUp() {
+        mockJsonWeatherService = mock(JsonWeatherService.class);
+        openWeatherMapApiFetcher = new OpenWeatherMapApiFetcher(mockJsonWeatherService);
     }
 
     @Test

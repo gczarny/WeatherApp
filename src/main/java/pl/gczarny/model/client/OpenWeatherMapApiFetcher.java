@@ -4,15 +4,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
 import java.nio.charset.*;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.JsonObject;
 import pl.gczarny.model.WeatherData;
+import pl.gczarny.utils.FxmlUtils;
 import pl.gczarny.utils.exceptions.WeatherDataFetchException;
 
 public class OpenWeatherMapApiFetcher implements WeatherClient {
@@ -27,7 +25,13 @@ public class OpenWeatherMapApiFetcher implements WeatherClient {
     @Override
     public List<WeatherData> fetchForecastData(String location) throws WeatherDataFetchException {
         JsonObject jsonObjectFromApi = jsonWeatherService.getJsonObjectFromApi(location);
+
+        if(jsonObjectFromApi.isJsonNull() || jsonObjectFromApi.size() == 0){
+            throw new WeatherDataFetchException(FxmlUtils.getResourceBundle().getString("error.response.empty"));
+        }
         for(JsonElement element : jsonObjectFromApi.getAsJsonArray("list")){
+            //System.out.println(getLDT(element.getAsJsonObject().get("dt").getAsLong()));
+            //System.out.println(element.getAsJsonObject().get("dt_txt").getAsString());
             if(shouldAddForecastData(forecastList, getLDT(element.getAsJsonObject().get("dt").getAsLong()),
                     element.getAsJsonObject().get("dt_txt").getAsString()))
             {

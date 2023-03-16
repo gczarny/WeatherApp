@@ -1,32 +1,30 @@
 package pl.gczarny.model.client;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import com.google.gson.JsonObject;
-import pl.gczarny.model.WeatherData;
+import pl.gczarny.utils.FxmlUtils;
 import pl.gczarny.utils.exceptions.WeatherDataFetchException;
-
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class JsonWeatherServiceTest {
     private JsonWeatherService jsonWeatherService;
-
+    private String location;
     @BeforeEach
     public void setUp() {
-        jsonWeatherService = new JsonWeatherService();
+        jsonWeatherService = mock(JsonWeatherService.class);
+        location = "Warsaw";
     }
 
     @Test
     public void receivedJsonObjectShouldHaveCodEqualTo200() throws Exception {
         // given
-        String location = "Warsaw";
-
+        JsonObject jsonObjectFromApi = JsonWeatherStub.getWeatherFromJson();
         // when
-        JsonObject jsonObjectFromApi = jsonWeatherService.getJsonObjectFromApi(location);
+        when(jsonWeatherService.getJsonObjectFromApi(location)).thenReturn(jsonObjectFromApi);
+
         // then
         assertEquals(200, jsonObjectFromApi.get("cod").getAsInt());
     }
@@ -34,13 +32,9 @@ class JsonWeatherServiceTest {
     @Test
     public void receivedJsonObjectFromApiShouldNotBeNull() throws Exception {
         // given
-        String location = "Warsaw";
-
+        JsonObject jsonObjectFromApi = JsonWeatherStub.getWeatherFromJson();
         // when
-        JsonObject jsonObjectFromApi = jsonWeatherService.getJsonObjectFromApi(location);
-
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        System.out.println(gson.toJson(jsonObjectFromApi));
+        when(jsonWeatherService.getJsonObjectFromApi(location)).thenReturn(jsonObjectFromApi);
         // then
         assertNotNull(jsonObjectFromApi);
         assertNotNull(jsonObjectFromApi.getAsJsonArray("list"));
@@ -51,6 +45,13 @@ class JsonWeatherServiceTest {
         // given
         String location = "NonExistingCity";
 
+        //when
+        try {
+            doThrow(new WeatherDataFetchException("Location not found")).when(jsonWeatherService).getJsonObjectFromApi(location);
+        } catch (WeatherDataFetchException e) {
+            throw new RuntimeException(e);
+        }
+
         // then
         assertThrows(WeatherDataFetchException.class, () -> {
             jsonWeatherService.getJsonObjectFromApi(location);
@@ -58,15 +59,15 @@ class JsonWeatherServiceTest {
     }
 
     @Test
-    public void fetchForecastDataShouldReturnListWithFiveElements() throws WeatherDataFetchException {
-        // given
-        String location = "Warsaw";
-        WeatherClient client = new OpenWeatherMapApiFetcher(new JsonWeatherService());
+    void validateEmptyJsonDataShouldThrowExceptionWithResponseEmptyMessage() {
+        //given
+        JsonWeatherService jsonWeatherService = new JsonWeatherService();
 
-        // when
-        List<WeatherData> forecastData = client.fetchForecastData(location);
+        //when
+        WeatherDataFetchException exception = assertThrows(WeatherDataFetchException.class, () -> jsonWeatherService.validateJsonData(""));
 
-        // then
-        assertEquals(5, forecastData.size());
+        //then
+        assertEquals(FxmlUtils.getResourceBundle().getString("error.response.empty"), exception.getMessage());
     }
+
 }

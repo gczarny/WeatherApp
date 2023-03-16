@@ -111,7 +111,17 @@ public class NestedController implements Initializable {
 
     private ImageView updateImageViews(String id){
         ImageView weatherIcon = new ImageView();
-        Image icon = new Image(WeatherIconManager.getIconPath(id));
+        Image icon = null;
+        if((WeatherIconManager.getIconPath(id).contains("empty"))){
+            try{
+                URL iconUrl = getClass().getResource(WeatherIconManager.getEmptyIcon());
+                icon = new Image(iconUrl.toString());
+            }catch(Exception e){
+                DialogUtils.errorDialog(FxmlUtils.getResourceBundle().getString("error.no.icon"));
+            }
+        }else{
+            icon = new Image(WeatherIconManager.getIconPath(id));
+        }
         weatherIcon.setImage(icon);
         weatherIcon.setFitHeight(Region.USE_COMPUTED_SIZE);
         weatherIcon.setFitWidth(Region.USE_COMPUTED_SIZE);

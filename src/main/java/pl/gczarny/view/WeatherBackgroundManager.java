@@ -52,9 +52,7 @@ public class WeatherBackgroundManager {
             BackgroundImage bgImage = new BackgroundImage(backgroundImage.getImageView().getImage(), BackgroundRepeat.NO_REPEAT,
                     BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
             pane.setBackground(new Background(bgImage));
-        } catch (NullPointerException e){
-            DialogUtils.errorDialog(e.getMessage());
-        } catch (IllegalArgumentException e){
+        } catch (NullPointerException | IllegalArgumentException e){
             DialogUtils.errorDialog(e.getMessage());
         }
     }

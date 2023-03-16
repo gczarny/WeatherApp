@@ -31,9 +31,7 @@ public class JsonWeatherService {
             while ((output = br.readLine()) != null) {
                 jsonData += output;
             }
-            if(jsonData.isEmpty()){
-                throw new WeatherDataFetchException(FxmlUtils.getResourceBundle().getString("error.http.response") + con.getResponseCode());
-            }
+            validateJsonData(jsonData);
             return gson.fromJson(jsonData, JsonObject.class);
         }catch (FileNotFoundException e) {
             throw new WeatherDataFetchException(FxmlUtils.getResourceBundle().getString("error.not.found"));
@@ -51,5 +49,11 @@ public class JsonWeatherService {
         con.setRequestMethod("GET");
         con.connect();
         return con;
+    }
+
+    protected void validateJsonData(String jsonData) throws WeatherDataFetchException {
+        if (jsonData == null || jsonData.isEmpty()) {
+            throw new WeatherDataFetchException(FxmlUtils.getResourceBundle().getString("error.response.empty"));
+        }
     }
 }
